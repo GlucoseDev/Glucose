@@ -1,5 +1,7 @@
 # Glucose
 Glucose is a Minecraft server software and API which provides plugins.
+## Prerequisites
+* [Java](http://java.oracle.com/) 8
 ## How to for server admins
 Currently, no builds are available, so you will have to compile from source.
 Once you have compiled, run it like you would any other jar.
