@@ -1,11 +1,19 @@
---- MinecraftServer.java	2021-06-07 13:29:17.935216411 +1200
-+++ MinecraftServerPatch.java	2021-06-07 13:32:12.031195951 +1200
-@@ -954,7 +954,7 @@
+--- .cache/1.16.5/decompiled/net/minecraft/server/MinecraftServer.java	2021-06-07 16:20:53.356221442 +1200
++++ src/main/java/net/minecraft/server/MinecraftServer.java	2021-06-07 16:25:12.058411608 +1200
+@@ -9,6 +9,7 @@
+ import com.mojang.authlib.GameProfileRepository;
+ import com.mojang.authlib.minecraft.MinecraftSessionService;
+ import com.mojang.datafixers.DataFixer;
++import glucose.Glucose;
+ import io.netty.buffer.ByteBuf;
+ import io.netty.buffer.ByteBufOutputStream;
+ import io.netty.buffer.Unpooled;
+@@ -954,7 +955,7 @@
      }
  
      public String getServerModName() {
 -        return "vanilla";
-+        return "Glucose";
++        return Glucose.getImplName();
      }
  
      public CrashReport fillReport(CrashReport crashreport) {
