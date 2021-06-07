@@ -7,7 +7,10 @@ Thank you to [Loom](https://github.com/LoomDev/Loom) for providing some scripts.
 ## How to for server admins
 No jars are currently available.
 
-To compile, use `mvn clean package`
+To compile:
+* Run `./glucose d`
+* Copy everything in `.cache/<version>/decompile/net` into `src/main/java/net`
+* Run `mvn clean package`
 
 Make sure you have [Maven](https://maven.apache.org/) installed.
 ## How to for plugin developers
