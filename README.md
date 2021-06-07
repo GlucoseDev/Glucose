@@ -5,8 +5,11 @@ Thank you to [Loom](https://github.com/LoomDev/Loom) for providing some scripts.
 ## Prerequisites
 * [Java](http://java.oracle.com/) 8
 ## How to for server admins
-Currently, no builds are available, so you will have to compile from source.
-Once you have compiled, run it like you would any other jar.
+No jars are currently available.
+
+To compile, use `mvn clean package`
+
+Make sure you have [Maven](https://maven.apache.org/) installed.
 ## How to for plugin developers
 **DISCLAIMER: THE API HAS NOT BEEN CREATED YET, THE FOLLOWING CODE IS A DRAFT**
 ### Basic command
