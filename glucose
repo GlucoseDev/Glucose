@@ -3,7 +3,7 @@ decompile(){
 	sh ./tools/scripts/remap_decompile.sh
 }
 patch(){
-	echo "coming soon..."
+	sh ./tools/scripts/applyPatches.sh
 }
 jar(){
 	mvn clean package
@@ -26,7 +26,7 @@ build(){
 case "$1" in
 	"b" | "build") build;;
 	"d" | "decompile" | "decom") decompile;;
-	"p" | "patch") applyPatches;;
+	"p" | "patch") patch;;
 	"j" | "jar") jar;;
 	*) help;;
 esac
