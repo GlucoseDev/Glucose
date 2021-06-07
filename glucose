@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ $1 == "d" ]; then
+
+	sh ./tools/scripts/remap_decompile.sh
+
+fi
