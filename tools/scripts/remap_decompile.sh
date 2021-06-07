@@ -6,10 +6,13 @@ mcVersion="1.16.5"
 
 if [ $mcVersion == "1.16.5" ]; then
 	mkdir .cache
-	curl -L https://launcher.mojang.com/v1/objects/41285beda6d251d190f2bf33beadd4fee187df7a/server.txt > .cache/server.txt 
+	mkdir .cache/1.16.5
+	curl -L https://launcher.mojang.com/v1/objects/41285beda6d251d190f2bf33beadd4fee187df7a/server.txt > .cache/$mcVersion/server.txt 
+	curl -L https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar > .cache/$mcVersion/server.jar
 fi
 
 printf "Converting $mcVersion Minecraft mappings..."
+#echo "tools/jars/enigma/*" "cuchaz.enigma.command.Main" convert-mappings proguard ".cache/$mcVersion/server.txt" tinyv2:obf:deobf ".cache/$mcVersion/server.tiny"
 java -cp "tools/jars/enigma/*" "cuchaz.enigma.command.Main" convert-mappings proguard ".cache/$mcVersion/server.txt" tinyv2:obf:deobf ".cache/$mcVersion/server.tiny" || exit 1
 printf " Done!\n"
  

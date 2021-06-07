@@ -1,6 +1,32 @@
 #!/bin/bash
-if [ $1 == "d" ]; then
-
+decompile(){
 	sh ./tools/scripts/remap_decompile.sh
-
-fi
+}
+patch(){
+	echo "coming soon..."
+}
+jar(){
+	mvn clean package
+}
+help(){
+	echo "Glucose Script Help"
+	echo ""
+	echo "Commands:"
+	echo ""
+	echo "b, build		| Build (run everything below)"
+	echo "decompile, decom  	| Only decompile"
+	echo "p, patch		| Apply patches"
+	echo "j, jar			| Build the jar"
+}
+build(){
+	decompile
+	patch
+	jar
+}
+case "$1" in
+	"b" | "build") build;;
+	"d" | "decompile" | "decom") decompile;;
+	"p" | "patch") applyPatches;;
+	"j" | "jar") jar;;
+	*) help;;
+esac
