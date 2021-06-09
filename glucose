@@ -6,7 +6,7 @@ patch(){
 	sh ./tools/scripts/applyPatches.sh
 }
 jar(){
-	mvn clean package
+	sh ./tools/scripts/build.sh
 }
 help(){
 	echo "Glucose Script Help"

@@ -1,4 +1,4 @@
-mcVersion="1.16.5"  
+mcVersion=$(cat .version) || exit 1
   echo "Applying patches to $mcVersion decompiled source..."
 
     if [ ! -d ".cache/$mcVersion/decompiled/" ]

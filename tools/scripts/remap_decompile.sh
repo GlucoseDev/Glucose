@@ -2,13 +2,19 @@
 
 # Credit to LoomDev for providing most of this script
 
-mcVersion="1.16.5"
+mcVersion=$(cat .version) || exit 1
 
 if [ $mcVersion == "1.16.5" ]; then
 	mkdir .cache
 	mkdir .cache/1.16.5
 	curl -L https://launcher.mojang.com/v1/objects/41285beda6d251d190f2bf33beadd4fee187df7a/server.txt > .cache/$mcVersion/server.txt 
 	curl -L https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar > .cache/$mcVersion/server.jar
+fi
+if [ $mcVersion == "1.17" ]; then
+	mkdir .cache
+	mkdir .cache/1.17
+	curl -L https://launcher.mojang.com/v1/objects/84d80036e14bc5c7894a4fad9dd9f367d3000334/server.txt > .cache/$mcVersion/server.txt
+	curl -L https://launcher.mojang.com/v1/objects/0a269b5f2c5b93b1712d0f5dc43b6182b9ab254e/server.jar > .cache/$mcVersion/server.jar
 fi
 
 printf "Converting $mcVersion Minecraft mappings..."
