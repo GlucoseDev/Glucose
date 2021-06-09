@@ -1,3 +1,6 @@
 [submodule "tools/Paperclip"]
 	path = tools/Paperclip
 	url = https://github.com/PaperMC/Paperclip.git
+[submodule "GlucoseLib"]
+	path = GlucoseLib
+	url = https://github.com/GlucoseDev/GlucoseLib.git
