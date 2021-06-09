@@ -1,5 +1,5 @@
 # Glucose
-Glucose is a Minecraft server software and API which provides plugins.
+Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vanilla Minecraft
 
 Thank you to [Loom](https://github.com/LoomDev/Loom) for providing some scripts.
 ## Prerequisites
