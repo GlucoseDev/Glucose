@@ -3,7 +3,8 @@ Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vani
 
 Thank you to [Loom](https://github.com/LoomDev/Loom) for providing some scripts.
 ## Prerequisites
-* [Java](http://java.oracle.com/) 8
+* [Java](http://java.oracle.com/) 8 (1.16.5 and below)
+* [Java](http://java.oracle.com/) 16 (1.17+)
 ## How to for server admins
 No jars are currently available.
 
