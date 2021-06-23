@@ -35,7 +35,7 @@ public void serverStartEvent(){
 Glucose uses patches on a decompiled version of the vanilla Minecraft jar. Why? Minecraft code is [closed source](https://en.wikipedia.org/wiki/Proprietary_software), therefore we cannot distribute it.
 
 ### Modifying Glucose code
-If you are modifying code by glucose (in the `src/glucose` package) then you will not need to ue patched. It is recommended that you fork this repository, make your changes, and then create a pull request.
+If you are modifying code by glucose (in the `src/glucose` package) then you will not need to use patches. It is recommended that you fork this repository, make your changes, and then create a pull request.
 ### Modifying Minecraft code
 As stated above, Minecraft is closed-source, so we cannot put source code in this repository. To contribute, you will need to use patches
 #### Working with patches
