@@ -1,7 +1,6 @@
 # Glucose
 Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vanilla Minecraft
 
-Thank you to [Loom](https://github.com/LoomDev/Loom) for providing some scripts.
 ## Prerequisites
 * [Java](http://java.oracle.com/) 8 (1.16.5 and below)
 * [Java](http://java.oracle.com/) 16 (1.17+)
@@ -51,3 +50,5 @@ Creating patches are easy. Here's an example:
 `diff -u /path/to/original/file.java /path/to/modified/file.java > patches/directory/FileName.java`
 
 Recommended tutorial: https://linuxhint.com/run-patch-command-in-linux/
+## Thanks to
+- [Loom](https://github.com/LoomDev/Loom) - Providing scripts
