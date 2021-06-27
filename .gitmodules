@@ -4,3 +4,6 @@
 [submodule "GlucoseLib"]
 	path = GlucoseLib
 	url = https://github.com/GlucoseDev/GlucoseLib.git
+[submodule "Sticky"]
+	path = Sticky
+	url = https://github.com/GlucoseDev/Sticky.git
