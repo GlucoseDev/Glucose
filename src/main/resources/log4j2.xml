@@ -28,9 +28,9 @@
             </filters>
             <!--<AppenderRef ref="WINDOWS_COMPAT"/>
             <AppenderRef ref="SysOut"/>
-            <AppenderRef ref="File"/>
             <AppenderRef ref="ServerGuiConsole"/>-->
             <AppenderRef ref="console"/>
+            <AppenderRef ref="File"/>
         </Root>
     </Loggers>
 </Configuration>
