@@ -1,0 +1,25 @@
+--- a/net/minecraft/commands/CommandSourceStack.java
++++ b/net/minecraft/commands/CommandSourceStack.java
+@@ -35,16 +35,17 @@
+ import net.minecraft.world.level.dimension.DimensionType;
+ import net.minecraft.world.phys.Vec2;
+ import net.minecraft.world.phys.Vec3;
++import org.jetbrains.annotations.Nullable;
+ 
+ public class CommandSourceStack implements SharedSuggestionProvider {
+    public static final SimpleCommandExceptionType ERROR_NOT_PLAYER = new SimpleCommandExceptionType(new TranslatableComponent("permissions.requires.player"));
+    public static final SimpleCommandExceptionType ERROR_NOT_ENTITY = new SimpleCommandExceptionType(new TranslatableComponent("permissions.requires.entity"));
+-   private final CommandSource source;
+-   private final Vec3 worldPosition;
++   public final CommandSource source; // Glucose :: private --> public
++   public final Vec3 worldPosition; // Glucose :: private --> public
+    private final ServerLevel level;
+-   private final int permissionLevel;
+-   private final String textName;
+-   private final Component displayName;
++   public final int permissionLevel; // Glucose :: private --> public
++   public final String textName; // Glucose :: private --> public
++   public final Component displayName; // Glucose :: private --> public
+    private final MinecraftServer server;
+    private final boolean silent;
+    @Nullable

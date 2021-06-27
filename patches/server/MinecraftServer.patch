@@ -1,5 +1,5 @@
---- .cache/1.16.5/decompiled/net/minecraft/server/MinecraftServer.java	2021-06-27 16:20:33.601232028 +1200
-+++ src/main/java/net/minecraft/server/MinecraftServer.java	2021-06-27 16:35:29.755792794 +1200
+--- a/net/minecraft/server/MinecraftServer.java
++++ b/net/minecraft/server/MinecraftServer.java
 @@ -9,6 +9,7 @@
  import com.mojang.authlib.GameProfileRepository;
  import com.mojang.authlib.minecraft.MinecraftSessionService;
@@ -8,7 +8,33 @@
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufOutputStream;
  import io.netty.buffer.Unpooled;
-@@ -923,7 +924,7 @@
+@@ -54,6 +55,8 @@
+ import java.util.stream.Stream;
+ import javax.annotation.Nullable;
+ import javax.imageio.ImageIO;
++
++import ml.glucosedev.glucose.GlucoseEventHandler;
+ import net.minecraft.CrashReport;
+ import net.minecraft.ReportedException;
+ import net.minecraft.SharedConstants;
+@@ -561,6 +564,8 @@
+          this.getConnection().stop();
+       }
+ 
++      new GlucoseEventHandler().serverShutdownEvent(); // Glucose
++
+       if (this.playerList != null) {
+          LOGGER.info("Saving players");
+          this.playerList.saveAll();
+@@ -637,6 +642,7 @@
+             this.status.setDescription(new TextComponent(this.motd));
+             this.status.setVersion(new ServerStatus.Version(SharedConstants.getCurrentVersion().getName(), SharedConstants.getCurrentVersion().getProtocolVersion()));
+             this.updateStatusIcon(this.status);
++            new GlucoseEventHandler().serverInitializeEvent(); // Glucose
+ 
+             while(this.running) {
+                long var1 = Util.getMillis() - this.nextTickTime;
+@@ -923,7 +929,7 @@
     }
  
     public String getServerModName() {

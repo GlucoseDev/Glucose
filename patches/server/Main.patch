@@ -1,5 +1,5 @@
---- .cache/1.16.5/decompiled/net/minecraft/server/Main.java	2021-06-27 16:20:33.674565811 +1200
-+++ src/main/java/net/minecraft/server/Main.java	2021-06-27 16:43:10.799354083 +1200
+--- a/net/minecraft/server/Main.java
++++ b/net/minecraft/server/Main.java
 @@ -14,6 +14,8 @@
  import java.util.Optional;
  import java.util.concurrent.CompletableFuture;
@@ -9,6 +9,15 @@
  import joptsimple.AbstractOptionSpec;
  import joptsimple.ArgumentAcceptingOptionSpec;
  import joptsimple.NonOptionArgumentSpec;
+@@ -61,7 +63,7 @@
+    public Main() {
+    }
+ 
+-   public static void main(String[] var0) {
++   public static void main(OptionSet var0) {
+       OptionParser var1 = new OptionParser();
+       OptionSpecBuilder var2 = var1.accepts("nogui");
+       OptionSpecBuilder var3 = var1.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");
 @@ -91,6 +93,7 @@
           Util.startTimerHackThread();
           RegistryAccess.RegistryHolder var17 = RegistryAccess.builtin();

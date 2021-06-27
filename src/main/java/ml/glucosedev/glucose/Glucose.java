@@ -10,12 +10,12 @@ public class Glucose {
     public static String getImplName(){
     return "Glucose";
     }
-    public static void main(String args[]) throws IOException {
-        j.info("Starting Glucose...");
-        if (args[0].equalsIgnoreCase("raw")) {
-            new GlucoseEventHandler().serverInitializeEvent();
-            new GlucoseEventHandler().serverStartEvent();
-            j.info("Done");
-        }
-    }
+//    public static void main(String args[]) throws IOException {
+//        j.info("Starting Glucose...");
+//        if (args[0].equalsIgnoreCase("raw")) {
+//            new GlucoseEventHandler().serverInitializeEvent();
+//            new GlucoseEventHandler().serverStartEvent();
+//            j.info("Done");
+//        }
+//    }
 }

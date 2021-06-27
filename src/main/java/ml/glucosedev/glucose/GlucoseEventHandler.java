@@ -14,4 +14,8 @@ public class GlucoseEventHandler {
         j.info("Initializing server...");
         new GlucoseConfig();
     }
+
+    public void serverShutdownEvent() {
+        j.info("Stopping Glucose...");
+    }
 }

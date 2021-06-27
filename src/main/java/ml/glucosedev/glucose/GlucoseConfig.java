@@ -18,6 +18,7 @@ public class GlucoseConfig {
 
                 glucoseProp.setProperty("joinMessage", "%player% &ejoined the game");
                 glucoseProp.setProperty("leaveMessage", "%player% &eleft the game");
+                glucoseProp.setProperty("unknown-command", "&cUnknown command... Use /help for help");
 
                 glucoseProp.store(output, "Coming soon...");
             } catch(IOException e) {
