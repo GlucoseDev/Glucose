@@ -1,0 +1,11 @@
+--- a/net/minecraft/server/packs/repository/PackRepository.java
++++ b/net/minecraft/server/packs/repository/PackRepository.java
+@@ -97,7 +97,7 @@
+    }
+ 
+    @Nullable
+-   public Pack getPack(String var1) {
++   public Pack getPack(Object var1) { // Glucose :: String --> Object
+       return (Pack)this.available.get(var1);
+    }
+ 

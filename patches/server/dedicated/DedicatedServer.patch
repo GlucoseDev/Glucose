@@ -1,12 +1,12 @@
---- .cache/1.16.5/decompiled/net/minecraft/server/dedicated/DedicatedServer.java	2021-06-27 16:21:16.478161885 +1200
-+++ src/main/java/net/minecraft/server/dedicated/DedicatedServer.java	2021-06-27 16:44:51.093431466 +1200
+--- a/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -19,6 +19,9 @@
  import java.util.function.BooleanSupplier;
  import java.util.regex.Pattern;
  import javax.annotation.Nullable;
 +
-+import glucose.GlucoseEventHandler;
-+import jdk.internal.joptsimple.internal.Strings;
++import ml.glucosedev.glucose.GlucoseEventHandler;
++//import jdk.internal.joptsimple.internal.Strings;
  import net.minecraft.CrashReport;
  import net.minecraft.DefaultUncaughtExceptionHandler;
  import net.minecraft.DefaultUncaughtExceptionHandlerWithName;
@@ -39,3 +39,13 @@
           if (var2.announcePlayerAchievements != null) {
              ((GameRules.BooleanValue)this.getGameRules().getRule(GameRules.RULE_ANNOUNCE_ADVANCEMENTS)).set(var2.announcePlayerAchievements, this);
           }
+@@ -536,7 +542,9 @@
+    }
+ 
+    // $FF: synthetic method
++   /* // Glucose start
+    public PlayerList getPlayerList() {
+       return this.getPlayerList();
+    }
++    */ // Glucose end
+ }

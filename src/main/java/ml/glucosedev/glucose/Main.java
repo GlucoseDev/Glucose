@@ -3,12 +3,13 @@ package ml.glucosedev.glucose;
 import jdk.internal.joptsimple.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
 public class Main {
     static Logger j = LogManager.getLogger();
-    public static void main(String[] args) {
+    public static void main(@NotNull String[] args) {
         OptionParser parser = new OptionParser();
         OptionSpecBuilder var2 = parser.accepts("nogui");
         OptionSpecBuilder var3 = parser.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");

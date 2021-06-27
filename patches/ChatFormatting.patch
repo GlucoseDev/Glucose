@@ -1,0 +1,10 @@
+--- a/net/minecraft/ChatFormatting.java
++++ b/net/minecraft/ChatFormatting.java
+@@ -10,6 +10,7 @@
+ import java.util.stream.Collectors;
+ import javax.annotation.Nullable;
+ 
++// Glucose ::: Include in patches
+ public enum ChatFormatting {
+    BLACK("BLACK", '0', 0, 0),
+    DARK_BLUE("DARK_BLUE", '1', 1, 170),

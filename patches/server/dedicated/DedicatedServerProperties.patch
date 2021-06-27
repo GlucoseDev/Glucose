@@ -1,5 +1,5 @@
---- .cache/1.16.5/decompiled/net/minecraft/server/dedicated/DedicatedServerProperties.java	2021-06-27 16:21:16.521495484 +1200
-+++ src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java	2021-06-27 16:43:10.769353860 +1200
+--- a/net/minecraft/server/dedicated/DedicatedServerProperties.java
++++ b/net/minecraft/server/dedicated/DedicatedServerProperties.java
 @@ -16,7 +16,7 @@
     public final boolean spawnAnimals = this.get("spawn-animals", true);
     public final boolean spawnNpcs = this.get("spawn-npcs", true);
@@ -9,3 +9,13 @@
     public final String resourcePack = this.get("resource-pack", "");
     public final String motd = this.get("motd", "A Minecraft Server");
     public final boolean forceGameMode = this.get("force-gamemode", false);
+@@ -120,7 +120,9 @@
+    }
+ 
+    // $FF: synthetic method
++   /* // Glucose start
+    protected Settings reload(RegistryAccess var1, Properties var2) {
+       return this.reload(var1, var2);
+    }
++    */ // Glucose end
+ }

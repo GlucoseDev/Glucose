@@ -14,10 +14,19 @@
     }
  
 -   public static void main(String[] var0) {
-+   public static void main(OptionSet var0) {
++   public static void main(jdk.internal.joptsimple.OptionSet var0) { // Glucose
        OptionParser var1 = new OptionParser();
        OptionSpecBuilder var2 = var1.accepts("nogui");
        OptionSpecBuilder var3 = var1.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");
+@@ -79,7 +81,7 @@
+       NonOptionArgumentSpec var15 = var1.nonOptions();
+ 
+       try {
+-         OptionSet var16 = var1.parse(var0);
++         OptionSet var16 = var1.parse(String.valueOf(var0)); // Glucose :: Wrapped
+          if (var16.has(var9)) {
+             var1.printHelpOn(System.err);
+             return;
 @@ -91,6 +93,7 @@
           Util.startTimerHackThread();
           RegistryAccess.RegistryHolder var17 = RegistryAccess.builtin();
@@ -34,4 +43,23 @@
 +            LOGGER.error("You need to agree to the EULA in order to run the server. Go to eula.txt for more info."); // Glucose :: info --> error
              return;
           }
+ 
+@@ -158,14 +161,15 @@
+          }
+ 
+          var29.saveDataTag(var17, (WorldData)var37);
++         Object finalVar3 = var37;
+          final DedicatedServer var43 = (DedicatedServer)MinecraftServer.spin((var16x) -> {
+-            DedicatedServer var17x = new DedicatedServer(var16x, var17, var29, var32, var35, var37, var19, DataFixers.getDataFixer(), var24, var25, var26, LoggerChunkProgressListener::new);
++            DedicatedServer var17x = new DedicatedServer(var16x, var17, var29, var32, var35, (WorldData) finalVar3, var19, DataFixers.getDataFixer(), var24, var25, var26, LoggerChunkProgressListener::new); // Glucose :: casted finalVar3
+             var17x.setSingleplayerName((String)var16.valueOf(var10));
+             var17x.setPort((Integer)var16.valueOf(var13));
+             var17x.setDemo(var16.has(var4));
+             var17x.setId((String)var16.valueOf(var14));
+-            boolean var18 = !var16.has(var2) && !var16.valuesOf(var15).contains("nogui");
+-            if (var18 && !GraphicsEnvironment.isHeadless()) {
++            boolean var181 = !var16.has(var2) && !var16.valuesOf(var15).contains("nogui");
++            if (var181 && !GraphicsEnvironment.isHeadless()) {
+                var17x.showGui();
+             }
  

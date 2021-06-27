@@ -4,7 +4,7 @@
  import com.mojang.authlib.GameProfileRepository;
  import com.mojang.authlib.minecraft.MinecraftSessionService;
  import com.mojang.datafixers.DataFixer;
-+import glucose.Glucose;
++import ml.glucosedev.glucose.Glucose;
  import io.netty.buffer.ByteBuf;
  import io.netty.buffer.ByteBufOutputStream;
  import io.netty.buffer.Unpooled;
@@ -17,7 +17,142 @@
  import net.minecraft.CrashReport;
  import net.minecraft.ReportedException;
  import net.minecraft.SharedConstants;
-@@ -561,6 +564,8 @@
+@@ -133,6 +136,8 @@
+ import net.minecraft.world.level.levelgen.PhantomSpawner;
+ import net.minecraft.world.level.levelgen.WorldGenSettings;
+ import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
++import net.minecraft.world.level.levelgen.feature.Feature;
++import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
+ import net.minecraft.world.level.saveddata.SaveDataDirtyRunnable;
+ import net.minecraft.world.level.storage.CommandStorage;
+@@ -221,18 +226,20 @@
+    private final StructureManager structureManager;
+    protected final WorldData worldData;
+ 
+-   public static <S extends MinecraftServer> S spin(Function<Thread, S> var0) {
+-      AtomicReference var1 = new AtomicReference();
+-      Thread var2 = new Thread(() -> {
+-         ((MinecraftServer)var1.get()).runServer();
++   public static <S extends MinecraftServer> S spin(Function<Thread, S> f) {
++      AtomicReference<S> ref = new AtomicReference<S>();
++      Thread thread = new Thread(() -> {
++         (ref.get()).runServer();
+       }, "Server thread");
+-      var2.setUncaughtExceptionHandler((var0x, var1x) -> {
+-         LOGGER.error(var1x);
++
++      thread.setUncaughtExceptionHandler((thread1, throwable) -> {
++         MinecraftServer.LOGGER.error(throwable);
+       });
+-      MinecraftServer var3 = (MinecraftServer)var0.apply(var2);
+-      var1.set(var3);
+-      var2.start();
+-      return var3;
++      S s0 = (S) f.apply(thread); // Glucose
++
++      ref.set(s0);
++      thread.start();
++      return s0;
+    }
+ 
+    public MinecraftServer(Thread var1, RegistryAccess.RegistryHolder var2, LevelStorageSource.LevelStorageAccess var3, WorldData var4, PackRepository var5, Proxy var6, DataFixer var7, ServerResources var8, MinecraftSessionService var9, GameProfileRepository var10, GameProfileCache var11, ChunkProgressListenerFactory var12) {
+@@ -321,9 +328,9 @@
+       long var5 = var3.seed();
+       long var7 = BiomeManager.obfuscateSeed(var5);
+       ImmutableList var9 = ImmutableList.of(new PhantomSpawner(), new PatrolSpawner(), new CatSpawner(), new VillageSiege(), new WanderingTraderSpawner(var2));
+-      MappedRegistry var10 = var3.dimensions();
+-      LevelStem var12 = (LevelStem)var10.get(LevelStem.OVERWORLD);
+-      Object var11;
++      MappedRegistry<LevelStem> var10 = var3.dimensions();
++      LevelStem var12 = var10.get(LevelStem.OVERWORLD);
++      ChunkGenerator var11;
+       DimensionType var13;
+       if (var12 == null) {
+          var13 = (DimensionType)this.registryHolder.dimensionTypes().getOrThrow(DimensionType.OVERWORLD_LOCATION);
+@@ -333,7 +340,7 @@
+          var11 = var12.generator();
+       }
+ 
+-      ServerLevel var14 = new ServerLevel(this, this.executor, this.storageSource, var2, Level.OVERWORLD, var13, var1, (ChunkGenerator)var11, var4, var7, var9, true);
++      ServerLevel var14 = new ServerLevel(this, this.executor, this.storageSource, var2, Level.OVERWORLD, var13, var1, var11, var4, var7, var9, true);
+       this.levels.put(Level.OVERWORLD, var14);
+       DimensionDataStorage var15 = var14.getDataStorage();
+       this.readScoreboard(var15);
+@@ -366,15 +373,15 @@
+          this.getCustomBossEvents().load(this.worldData.getCustomBossEvents());
+       }
+ 
+-      Iterator var17 = var10.entrySet().iterator();
++      Iterator<Entry<ResourceKey<LevelStem>, LevelStem>> var17 = var10.entrySet().iterator();
+ 
+       while(var17.hasNext()) {
+-         Entry var27 = (Entry)var17.next();
+-         ResourceKey var19 = (ResourceKey)var27.getKey();
++         Entry<ResourceKey<LevelStem>, LevelStem> var27 = var17.next();
++         ResourceKey<LevelStem> var19 = var27.getKey();
+          if (var19 != LevelStem.OVERWORLD) {
+-            ResourceKey var20 = ResourceKey.create(Registry.DIMENSION_REGISTRY, var19.location());
+-            DimensionType var21 = ((LevelStem)var27.getValue()).type();
+-            ChunkGenerator var22 = ((LevelStem)var27.getValue()).generator();
++            ResourceKey<Level> var20 = ResourceKey.create(Registry.DIMENSION_REGISTRY, var19.location());
++            DimensionType var21 = (var27.getValue()).type();
++            ChunkGenerator var22 = (var27.getValue()).generator();
+             DerivedLevelData var23 = new DerivedLevelData(this.worldData, var2);
+             ServerLevel var24 = new ServerLevel(this, this.executor, this.storageSource, var23, var20, var21, var1, var22, var4, var7, ImmutableList.of(), false);
+             var16.addListener(new BorderChangeListener.DelegateBorderChangeListener(var24.getWorldBorder()));
+@@ -402,10 +409,10 @@
+          }
+ 
+          boolean var10 = false;
+-         Iterator var11 = BlockTags.VALID_SPAWN.getValues().iterator();
++         Iterator<Block> var11 = BlockTags.VALID_SPAWN.getValues().iterator();
+ 
+          while(var11.hasNext()) {
+-            Block var12 = (Block)var11.next();
++            Block var12 = var11.next();
+             if (var6.getSurfaceBlocks().contains(var12.defaultBlockState())) {
+                var10 = true;
+                break;
+@@ -439,7 +446,7 @@
+          }
+ 
+          if (var2) {
+-            ConfiguredFeature var20 = Features.BONUS_CHEST;
++            ConfiguredFeature<net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration, net.minecraft.world.level.levelgen.feature.Feature<net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration>> var20 = (ConfiguredFeature<FeatureConfiguration, Feature<FeatureConfiguration>>) Features.BONUS_CHEST; // Glucose :: Casted
+             var20.place(var0, var5, var0.random, new BlockPos(var1.getXSpawn(), var1.getYSpawn(), var1.getZSpawn()));
+          }
+ 
+@@ -474,7 +481,7 @@
+ 
+       this.nextTickTime = Util.getMillis() + 10L;
+       this.waitUntilNextTick();
+-      Iterator var5 = this.levels.values().iterator();
++      Iterator<ServerLevel> var5 = this.levels.values().iterator();
+ 
+       while(true) {
+          ServerLevel var6;
+@@ -489,7 +496,7 @@
+                return;
+             }
+ 
+-            var6 = (ServerLevel)var5.next();
++            var6 = var5.next();
+             var7 = (ForcedChunksSavedData)var6.getDataStorage().get(ForcedChunksSavedData::new, "chunks");
+          } while(var7 == null);
+ 
+@@ -534,8 +541,8 @@
+    public boolean saveAllChunks(boolean var1, boolean var2, boolean var3) {
+       boolean var4 = false;
+ 
+-      for(Iterator var5 = this.getAllLevels().iterator(); var5.hasNext(); var4 = true) {
+-         ServerLevel var6 = (ServerLevel)var5.next();
++      for(Iterator<ServerLevel> var5 = this.getAllLevels().iterator(); var5.hasNext(); var4 = true) {
++         ServerLevel var6 = var5.next();
+          if (!var1) {
+             LOGGER.info("Saving chunks for level '{}'/{}", var6, var6.dimension().location());
+          }
+@@ -561,6 +568,8 @@
           this.getConnection().stop();
        }
  
@@ -26,7 +161,30 @@
        if (this.playerList != null) {
           LOGGER.info("Saving players");
           this.playerList.saveAll();
-@@ -637,6 +642,7 @@
+@@ -568,11 +577,11 @@
+       }
+ 
+       LOGGER.info("Saving worlds");
+-      Iterator var1 = this.getAllLevels().iterator();
++      Iterator<ServerLevel> var1 = this.getAllLevels().iterator();
+ 
+       ServerLevel var2;
+       while(var1.hasNext()) {
+-         var2 = (ServerLevel)var1.next();
++         var2 = var1.next();
+          if (var2 != null) {
+             var2.noSave = false;
+          }
+@@ -582,7 +591,7 @@
+       var1 = this.getAllLevels().iterator();
+ 
+       while(var1.hasNext()) {
+-         var2 = (ServerLevel)var1.next();
++         var2 = var1.next();
+          if (var2 != null) {
+             try {
+                var2.close();
+@@ -637,6 +646,7 @@
              this.status.setDescription(new TextComponent(this.motd));
              this.status.setVersion(new ServerStatus.Version(SharedConstants.getCurrentVersion().getName(), SharedConstants.getCurrentVersion().getProtocolVersion()));
              this.updateStatusIcon(this.status);
@@ -34,7 +192,33 @@
  
              while(this.running) {
                 long var1 = Util.getMillis() - this.nextTickTime;
-@@ -923,7 +929,7 @@
+@@ -726,10 +736,10 @@
+          return true;
+       } else {
+          if (this.haveTime()) {
+-            Iterator var1 = this.getAllLevels().iterator();
++            Iterator<ServerLevel> var1 = this.getAllLevels().iterator();
+ 
+             while(var1.hasNext()) {
+-               ServerLevel var2 = (ServerLevel)var1.next();
++               ServerLevel var2 = var1.next();
+                if (var2.getChunkSource().pollTask()) {
+                   return true;
+                }
+@@ -829,10 +839,10 @@
+       this.profiler.push("commandFunctions");
+       this.getFunctions().tick();
+       this.profiler.popPush("levels");
+-      Iterator var2 = this.getAllLevels().iterator();
++      Iterator<ServerLevel> var2 = this.getAllLevels().iterator();
+ 
+       while(var2.hasNext()) {
+-         ServerLevel var3 = (ServerLevel)var2.next();
++         ServerLevel var3 = var2.next();
+          this.profiler.push(() -> {
+             return var3 + " " + var3.dimension().location();
+          });
+@@ -923,7 +933,7 @@
     }
  
     public String getServerModName() {
@@ -43,3 +227,138 @@
     }
  
     public CrashReport fillReport(CrashReport var1) {
+@@ -934,18 +944,18 @@
+       }
+ 
+       var1.getSystemDetails().setDetail("Data Packs", () -> {
+-         StringBuilder var1 = new StringBuilder();
+-         Iterator var2 = this.packRepository.getSelectedPacks().iterator();
++         StringBuilder stringBuilder = new StringBuilder();
++         Iterator<Pack> var2 = this.packRepository.getSelectedPacks().iterator();
+ 
+          while(var2.hasNext()) {
+-            Pack var3 = (Pack)var2.next();
+-            if (var1.length() > 0) {
+-               var1.append(", ");
++            Pack var3 = var2.next();
++            if (stringBuilder.length() > 0) {
++               stringBuilder.append(", ");
+             }
+ 
+-            var1.append(var3.getId());
++            stringBuilder.append(var3.getId());
+             if (!var3.getCompatibility().isCompatible()) {
+-               var1.append(" (incompatible)");
++               stringBuilder.append(" (incompatible)");
+             }
+          }
+ 
+@@ -1013,10 +1023,10 @@
+    }
+ 
+    private void updateMobSpawningFlags() {
+-      Iterator var1 = this.getAllLevels().iterator();
++      Iterator<ServerLevel> var1 = this.getAllLevels().iterator();
+ 
+       while(var1.hasNext()) {
+-         ServerLevel var2 = (ServerLevel)var1.next();
++         ServerLevel var2 = var1.next();
+          var2.setSpawnSettings(this.isSpawningMonsters(), this.isSpawningAnimals());
+       }
+ 
+@@ -1071,10 +1081,10 @@
+       var1.setDynamicData("run_time", (Util.getMillis() - var1.getStartupTime()) / 60L * 1000L);
+       var1.setDynamicData("avg_tick_ms", (int)(Mth.average(this.tickTimes) * 1.0E-6D));
+       int var2 = 0;
+-      Iterator var3 = this.getAllLevels().iterator();
++      Iterator<ServerLevel> var3 = this.getAllLevels().iterator();
+ 
+       while(var3.hasNext()) {
+-         ServerLevel var4 = (ServerLevel)var3.next();
++         ServerLevel var4 = var3.next();
+          if (var4 != null) {
+             var1.setDynamicData("world[" + var2 + "][dimension]", var4.dimension().location());
+             var1.setDynamicData("world[" + var2 + "][mode]", this.worldData.getGameType());
+@@ -1271,8 +1281,8 @@
+    }
+ 
+    public CompletableFuture<Void> reloadResources(Collection<String> var1) {
+-      CompletableFuture var2 = CompletableFuture.supplyAsync(() -> {
+-         Stream var10000 = var1.stream();
++      CompletableFuture<Void> var2 = CompletableFuture.supplyAsync(() -> {
++         Stream<String> var10000 = var1.stream(); // Glucose -- Ty Loom :P
+          PackRepository var10001 = this.packRepository;
+          var10001.getClass();
+          return (ImmutableList)var10000.map(var10001::getPack).filter(Objects::nonNull).map(Pack::open).collect(ImmutableList.toImmutableList());
+@@ -1280,10 +1290,10 @@
+          return ServerResources.loadResources(var1x, this.isDedicatedServer() ? Commands.CommandSelection.DEDICATED : Commands.CommandSelection.INTEGRATED, this.getFunctionCompilationLevel(), this.executor, this);
+       }).thenAcceptAsync((var2x) -> {
+          this.resources.close();
+-         this.resources = var2x;
++         this.resources = (ServerResources) var2x; // Glucose :: Casted to ServerResources
+          this.packRepository.setSelected(var1);
+          this.worldData.setDataPackConfig(getSelectedPacks(this.packRepository));
+-         var2x.updateGlobals();
++         ((ServerResources) var2x).updateGlobals(); // Glucose :: Casted to ServerResources
+          this.getPlayerList().saveAll();
+          this.getPlayerList().reloadResources();
+          this.functionManager.replaceLibrary(this.resources.getFunctionLibrary());
+@@ -1336,8 +1346,8 @@
+    }
+ 
+    private static DataPackConfig getSelectedPacks(PackRepository var0) {
+-      Collection var1 = var0.getSelectedIds();
+-      ImmutableList var2 = ImmutableList.copyOf(var1);
++      Collection<String> var1 = var0.getSelectedIds();
++      ImmutableList<String> var2 = ImmutableList.copyOf(var1);
+       List var3 = (List)var0.getAvailableIds().stream().filter((var1x) -> {
+          return !var1.contains(var1x);
+       }).collect(ImmutableList.toImmutableList());
+@@ -1455,14 +1465,14 @@
+ 
+    public void saveDebugReport(Path var1) throws IOException {
+       Path var2 = var1.resolve("levels");
+-      Iterator var3 = this.levels.entrySet().iterator();
++      Iterator<Entry<ResourceKey<Level>, ServerLevel>> var3 = this.levels.entrySet().iterator();
+ 
+       while(var3.hasNext()) {
+-         Entry var4 = (Entry)var3.next();
+-         ResourceLocation var5 = ((ResourceKey)var4.getKey()).location();
++         Entry<ResourceKey<Level>, ServerLevel> var4 = var3.next();
++         ResourceLocation var5 = (var4.getKey()).location();
+          Path var6 = var2.resolve(var5.getNamespace()).resolve(var5.getPath());
+          Files.createDirectories(var6);
+-         ((ServerLevel)var4.getValue()).saveDebugReport(var6);
++         (var4.getValue()).saveDebugReport(var6);
+       }
+ 
+       this.dumpGameRules(var1.resolve("gamerules.txt"));
+@@ -1574,10 +1584,10 @@
+       try {
+          String var4 = System.getProperty("java.class.path");
+          String var5 = System.getProperty("path.separator");
+-         Iterator var6 = Splitter.on(var5).split(var4).iterator();
++         Iterator<String> var6 = Splitter.on(var5).split(var4).iterator();
+ 
+          while(var6.hasNext()) {
+-            String var7 = (String)var6.next();
++            String var7 = var6.next();
+             var2.write(var7);
+             var2.write("\n");
+          }
+@@ -1694,6 +1704,7 @@
+    }
+ 
+    // $FF: synthetic method
++   /* // Glucose Start :: Compile error
+    public void doRunTask(Runnable var1) {
+       this.doRunTask((TickTask)var1);
+    }
+@@ -1707,6 +1718,7 @@
+    public Runnable wrapRunnable(Runnable var1) {
+       return this.wrapRunnable(var1);
+    }
++    */ // Glucose end
+ 
+    static {
+       DEMO_SETTINGS = new LevelSettings("Demo World", GameType.SURVIVAL, false, Difficulty.NORMAL, false, new GameRules(), DataPackConfig.DEFAULT);
