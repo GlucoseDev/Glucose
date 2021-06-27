@@ -5,12 +5,13 @@ name: Java CI with Maven
 
 on:
   push: 
-    branches: [ master ]
+    branches: [ "1.17", "1.16.5", "1.16.5-Sticky" ]
   pull_request:
-    branches: [ master ]
+    branches: [ "1.17", "1.16.5", "1.16.5-Sticky" ]
 
 jobs:
   build:
+    if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ubuntu-latest
 
     steps:
