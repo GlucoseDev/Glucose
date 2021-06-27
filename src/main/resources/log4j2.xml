@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Thanks to CanaryMod and Sponge! -->
+<Configuration status="INFO" packages="net.minecraft,com.mojang,Glucose">
+    <Properties>StyleMapName=Spock Name=reset,red NameMessageSeparator=red Message=red StackTraceElement.ClassName=red StackTraceElement.ClassMethodSeparator=red,faint StackTraceElement.MethodName=yellow StackTraceElement.NativeMethod=yellow</Properties>
+    <Appenders>
+        <!--<Console name="WINDOWS_COMPAT" target="SYSTEM_OUT"/>
+        <Queue name="SysOut">
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%c] [%level]%replace{ [%marker]}{\s\[]}{}: %msg%n"/>
+        </Queue>
+        <Queue name="ServerGuiConsole">
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%c] [%level]%replace{ [%marker]}{\s\[]}{}: %msg%n"/>
+        </Queue>-->
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%c] [%t/%highlight{%level}]%replace{ [%marker]}{\s\[]}{}: %msg%n"/>
+        </Console>
+        <RollingRandomAccessFile name="File" fileName="logs/latest.log" filePattern="logs/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="[%d{HH:mm:ss}] [%c] [%level]%replace{ [%marker]}{\s\[]}{}: %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <OnStartupTriggeringPolicy/>
+            </Policies>
+        </RollingRandomAccessFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <filters>
+                <MarkerFilter marker="NETWORK_PACKETS" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </filters>
+            <!--<AppenderRef ref="WINDOWS_COMPAT"/>
+            <AppenderRef ref="SysOut"/>
+            <AppenderRef ref="File"/>
+            <AppenderRef ref="ServerGuiConsole"/>-->
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>

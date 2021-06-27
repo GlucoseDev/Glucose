@@ -22,4 +22,7 @@ public class GlucoseEventHandler {
         }
         /* Coming soon to a town near you... */
     }
+    public void serverInitializeEvent() throws IOException {
+        new GlucoseConfig();
+    }
 }
