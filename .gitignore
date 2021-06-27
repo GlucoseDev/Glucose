@@ -1,0 +1,4 @@
+.cache/
+target/
+src/main/java/net/minecraft/
+*.jar
