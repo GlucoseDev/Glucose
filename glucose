@@ -1,4 +1,5 @@
 #!/bin/bash
+mcVersion=`cat .version`
 decompile(){
 	sh ./tools/scripts/remap_decompile.sh
 }
@@ -25,7 +26,7 @@ build(){
 }
 case "$1" in
 	"b" | "build") build;;
-	"d" | "decompile" | "decom") decompile;;
+	"d" | "decompile" | "decom") ./Sticky/sticky.sh $mcVersion;;
 	"p" | "patch") patch;;
 	"j" | "jar") jar;;
 	*) help;;
