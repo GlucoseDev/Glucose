@@ -25,7 +25,7 @@ mcVersion=$(cat .version) || exit 1
             strip_cr ".cache/$mcVersion/decompiled/net/minecraft/$javaFile"
             mkdir -p "$(dirname "./src/main/java/net/minecraft/$javaFile")"
             cp ".cache/$mcVersion/decompiled/net/minecraft/$javaFile" "src/main/java/net/minecraft/$javaFile"
-            patch -d "src/main/java/" "net/minecraft/$javaFile" < "$patchFile"
+            patch -d "src/main/java/net/minecraft/$javaFile" < "$patchFile"
         fi
     done
 
