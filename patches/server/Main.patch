@@ -1,0 +1,28 @@
+--- .cache/1.16.5/decompiled/net/minecraft/server/Main.java	2021-06-27 16:20:33.674565811 +1200
++++ src/main/java/net/minecraft/server/Main.java	2021-06-27 16:43:10.799354083 +1200
+@@ -14,6 +14,8 @@
+ import java.util.Optional;
+ import java.util.concurrent.CompletableFuture;
+ import java.util.function.BooleanSupplier;
++
++import jdk.internal.joptsimple.*;
+ import joptsimple.AbstractOptionSpec;
+ import joptsimple.ArgumentAcceptingOptionSpec;
+ import joptsimple.NonOptionArgumentSpec;
+@@ -91,6 +93,7 @@
+          Util.startTimerHackThread();
+          RegistryAccess.RegistryHolder var17 = RegistryAccess.builtin();
+          Path var18 = Paths.get("server.properties");
++         Path glucoseProp = Paths.get("glucose.properties");
+          DedicatedServerSettings var19 = new DedicatedServerSettings(var17, var18);
+          var19.forceSave();
+          Path var20 = Paths.get("eula.txt");
+@@ -101,7 +104,7 @@
+          }
+ 
+          if (!var21.hasAgreedToEULA()) {
+-            LOGGER.info("You need to agree to the EULA in order to run the server. Go to eula.txt for more info.");
++            LOGGER.error("You need to agree to the EULA in order to run the server. Go to eula.txt for more info."); // Glucose :: info --> error
+             return;
+          }
+ 
