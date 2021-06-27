@@ -18,16 +18,21 @@ Make sure you have [Maven](https://maven.apache.org/) installed.
 ### Basic command
 #### MyCommand Class
 ```java
-public class MyCommand extends GlucoseCommand {
- public void onServerCommand(CommandSender sender, String[] args, Command command) {
-   sender.sendMessage(ChatColors.GREEN, "Hello!");
- }
+public class MyCommand {
+    @Command(
+            aliases = { "hello" },
+            description = "My Command",
+            permissions = { "my.permission.node" },
+    )
+    public void helloCommand(CommandSender sender, String[] args){
+        sender.send("Hello!");
+  }
 }
 ```
 #### In your main class serverStartEvent
 ```java
-public void serverStartEvent(){
-  glucose.registerCommand("hello").executor(new myCommand());
+public void serverStartEvent() {
+  Glucose.commands().registerCommand(new MyCommand());
 }
 ```
 ## Contributing
