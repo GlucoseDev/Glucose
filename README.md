@@ -40,14 +40,15 @@ As stated above, Minecraft is closed-source, so we cannot put source code in thi
 #### Working with patches
 What you will need to do is clone this repository, and run `./glucose d`, then copy everything in `.cache/<version>/decompiled/net` into `src/main/java/net`. Then run `./glucose p`
 
-* Go to `src/main/java/net/minecraft` etc etc and then **make a copy** of the file you want to modify. For example, `MinecraftServerPatch.java`
 * Modify the code how you desire
 ##### Creating your first patch
 Creating patches are easy. Here's an example:
 
-`diff -u src/main/java/net/minecraft/server/MinecraftServer.java src/main/java/net/minecraft/server/MinecraftServerPatch.java > patches/server/MinecraftServer.patch`
+`diff -u .cache/1.16.5/decompiled/net/minecraft/server/dedicated/DedicatedServer.java src/main/java/net/minecraft/server/dedicated/DedicatedServer.java > patches/server/dedicated/DedicatedServer.patch`
 
-`diff -u /path/to/original/file.java /path/to/modified/file.java > patches/directory/FileName.java`
+As you can see, the patches directory is structured from `src/main/net/minecraft`, so if your file was in `src/main/net/minecraft/server`, you would put it in `patches/server`
+
+`diff -u .cache/<version>/decompiled/net/minecraft/File.java /path/to/modified/File.java > patches/directory/File.patch`
 
 Recommended tutorial: https://linuxhint.com/run-patch-command-in-linux/
 ## Thanks to
