@@ -1,7 +1,7 @@
 package glucose;
 
 public class Glucose {
-public String getImplName(){
+public static String getImplName(){
     return "Glucose";
     }
 }
