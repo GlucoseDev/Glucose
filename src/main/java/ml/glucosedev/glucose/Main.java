@@ -9,7 +9,12 @@ import java.io.IOException;
 
 public class Main {
     static Logger j = LogManager.getLogger();
-    public static void main(@NotNull String[] args) {
+    public static void main(@NotNull final String[] args) {
+        j.info("--------------------");
+        j.info("Glucose");
+        j.info("https://github.com/GlucoseDev/Glucose");
+        j.info("Loads of code stolen from Loom... Check them out! > https://github.com/LoomDev/Loom/");
+        j.info("--------------------");
         OptionParser parser = new OptionParser();
         OptionSpecBuilder var2 = parser.accepts("nogui");
         OptionSpecBuilder var3 = parser.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");

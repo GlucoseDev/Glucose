@@ -31,7 +31,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>net.minecraft.server.Main</mainClass>
+                            <mainClass>ml.glucosedev.glucose.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -41,7 +41,12 @@
 
 
     <dependencies>
-
+        <dependency>
+            <groupId>glucose</groupId>
+            <artifactId>minecraft-server</artifactId>
+            <version>1.16.5-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
@@ -93,9 +98,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>glucose</groupId>
-            <artifactId>minecraft-server</artifactId>
-            <version>1.16.5-SNAPSHOT</version>
+            <groupId>net.sf.jopt-simple</groupId>
+            <artifactId>jopt-simple</artifactId>
+            <version>5.0.4</version>
         </dependency>
     </dependencies>
 </project>
