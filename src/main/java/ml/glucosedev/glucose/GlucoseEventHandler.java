@@ -1,0 +1,17 @@
+package ml.glucosedev.glucose;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+
+public class GlucoseEventHandler {
+    static Logger j = LogManager.getLogger();
+    public void serverStartEvent() throws IOException {
+        new GlucosePluginLoader();
+    }
+    public void serverInitializeEvent() throws IOException {
+        j.info("Initializing server...");
+        new GlucoseConfig();
+    }
+}

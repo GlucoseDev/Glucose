@@ -1,4 +1,4 @@
-package glucose;
+package ml.glucosedev.glucose;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
