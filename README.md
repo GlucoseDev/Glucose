@@ -1,40 +1,14 @@
 # Glucose
-Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vanilla Minecraft
+Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vanilla Minecraft and a bunch more.
+
+Currently under heavy development, if you wish to use this mod for production then it is recommended you do not.
 
 ## Prerequisites
 * [Java](http://java.oracle.com/) 8 (1.16.5 and below)
 * [Java](http://java.oracle.com/) 16 (1.17+)
 ## How to for server admins
-No jars are currently available.
-
-To compile:
-* Run `./glucose d`
-* Copy everything in `.cache/<version>/decompile/net` into `src/main/java/net`
-* Run `mvn clean package`
-
-Make sure you have [Maven](https://maven.apache.org/) installed.
-## How to for plugin developers
-**DISCLAIMER: THE API HAS NOT BEEN CREATED YET, THE FOLLOWING CODE IS A DRAFT**
-### Basic command
-#### MyCommand Class
-```java
-public class MyCommand {
-    @Command(
-            aliases = { "hello" },
-            description = "My Command",
-            permissions = { "my.permission.node" },
-    )
-    public void helloCommand(CommandSender sender, String[] args){
-        sender.send("Hello!");
-  }
-}
-```
-#### In your main class serverStartEvent
-```java
-public void serverStartEvent() {
-  Glucose.commands().registerCommand(new MyCommand());
-}
-```
+- Download from [releases](https://glucosedev.ml/releases/)
+- Run it like any other jar file
 ## Contributing
 Glucose uses patches on a decompiled version of the vanilla Minecraft jar. Why? Minecraft code is [closed source](https://en.wikipedia.org/wiki/Proprietary_software), therefore we cannot distribute it.
 
@@ -47,14 +21,17 @@ What you will need to do is clone this repository, and run `./glucose d`, then c
 
 * Modify the code how you desire
 ##### Creating your first patch
-Creating patches are easy. Here's an example:
+You can just run `./glucose rbp` to make patches.
+## Building
+```bash
+git clone git@github.com:GlucoseDev/Glucose
+cd Glucose
+./glucose decompile
+./glucose patch
+mvn clean install
+```
+Make sure you have [Maven](https://maven.apache.org/) installed.
 
-`diff -u .cache/1.16.5/decompiled/net/minecraft/server/dedicated/DedicatedServer.java src/main/java/net/minecraft/server/dedicated/DedicatedServer.java > patches/server/dedicated/DedicatedServer.patch`
-
-As you can see, the patches directory is structured from `src/main/net/minecraft`, so if your file was in `src/main/net/minecraft/server`, you would put it in `patches/server`
-
-`diff -u .cache/<version>/decompiled/net/minecraft/File.java /path/to/modified/File.java > patches/directory/File.patch`
-
-Recommended tutorial: https://linuxhint.com/run-patch-command-in-linux/
+You might need to do some tinkering to get it to work sometimes.
 ## Thanks to
-- [Loom](https://github.com/LoomDev/Loom) - Providing scripts
+- [Loom](https://github.com/LoomDev/Loom) - Providing scripts and a bunch of base code
