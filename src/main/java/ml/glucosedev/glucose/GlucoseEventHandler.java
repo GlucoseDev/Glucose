@@ -18,4 +18,11 @@ public class GlucoseEventHandler {
     public void serverShutdownEvent() {
         j.info("Stopping Glucose...");
     }
+    public void beforeStartEvent() {
+
+    }
+
+    public static void fireEvent(Event event) {
+
+    }
 }

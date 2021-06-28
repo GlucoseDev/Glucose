@@ -1,6 +1,7 @@
 package ml.glucosedev.glucose;
 
-import jdk.internal.joptsimple.*;
+//import jdk.internal.joptsimple.*;
+import joptsimple.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -10,11 +11,14 @@ import java.io.IOException;
 public class Main {
     static Logger j = LogManager.getLogger();
     public static void main(@NotNull final String[] args) {
-        j.info("--------------------");
+        j.info("------------------------------");
         j.info("Glucose");
         j.info("https://github.com/GlucoseDev/Glucose");
         j.info("Loads of code stolen from Loom... Check them out! > https://github.com/LoomDev/Loom/");
-        j.info("--------------------");
+        j.info("------------------------------");
+
+        new GlucoseEventHandler().beforeStartEvent();
+
         OptionParser parser = new OptionParser();
         OptionSpecBuilder var2 = parser.accepts("nogui");
         OptionSpecBuilder var3 = parser.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");
@@ -38,7 +42,8 @@ public class Main {
                 return;
             }
             j.info("Starting Minecraft Server...");
-            net.minecraft.server.Main.main(options); // Starts Minecraft server
+            net.minecraft.server.Main.main(options); // Starts Native Minecraft server
+
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);

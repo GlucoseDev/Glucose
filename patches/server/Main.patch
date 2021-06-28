@@ -1,24 +1,31 @@
 --- a/net/minecraft/server/Main.java
 +++ b/net/minecraft/server/Main.java
-@@ -14,6 +14,8 @@
+@@ -14,12 +14,9 @@
  import java.util.Optional;
  import java.util.concurrent.CompletableFuture;
  import java.util.function.BooleanSupplier;
+-import joptsimple.AbstractOptionSpec;
+-import joptsimple.ArgumentAcceptingOptionSpec;
+-import joptsimple.NonOptionArgumentSpec;
+-import joptsimple.OptionParser;
+-import joptsimple.OptionSet;
+-import joptsimple.OptionSpecBuilder;
 +
-+import jdk.internal.joptsimple.*;
- import joptsimple.AbstractOptionSpec;
- import joptsimple.ArgumentAcceptingOptionSpec;
- import joptsimple.NonOptionArgumentSpec;
-@@ -61,7 +63,7 @@
++//import jdk.internal.joptsimple.*;
++import joptsimple.*;
+ import net.minecraft.CrashReport;
+ import net.minecraft.DefaultUncaughtExceptionHandler;
+ import net.minecraft.Util;
+@@ -61,7 +58,7 @@
     public Main() {
     }
  
 -   public static void main(String[] var0) {
-+   public static void main(jdk.internal.joptsimple.OptionSet var0) { // Glucose
++   public static void main(joptsimple.OptionSet var0) { // Glucose :: String --> OptionSet
        OptionParser var1 = new OptionParser();
        OptionSpecBuilder var2 = var1.accepts("nogui");
        OptionSpecBuilder var3 = var1.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");
-@@ -79,7 +81,7 @@
+@@ -79,7 +76,7 @@
        NonOptionArgumentSpec var15 = var1.nonOptions();
  
        try {
@@ -27,7 +34,7 @@
           if (var16.has(var9)) {
              var1.printHelpOn(System.err);
              return;
-@@ -91,6 +93,7 @@
+@@ -91,6 +88,7 @@
           Util.startTimerHackThread();
           RegistryAccess.RegistryHolder var17 = RegistryAccess.builtin();
           Path var18 = Paths.get("server.properties");
@@ -35,7 +42,7 @@
           DedicatedServerSettings var19 = new DedicatedServerSettings(var17, var18);
           var19.forceSave();
           Path var20 = Paths.get("eula.txt");
-@@ -101,7 +104,7 @@
+@@ -101,7 +99,7 @@
           }
  
           if (!var21.hasAgreedToEULA()) {
@@ -44,7 +51,7 @@
              return;
           }
  
-@@ -158,14 +161,15 @@
+@@ -158,14 +156,15 @@
           }
  
           var29.saveDataTag(var17, (WorldData)var37);
