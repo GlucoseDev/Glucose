@@ -10,10 +10,11 @@ public class GlucosePluginLoader {
     static Logger j = LogManager.getLogger();
     public GlucosePluginLoader() throws IOException {
         j.info("Loading plugins...");
-        File pluginDir = new File("./plugins/");
+        File pluginDir = new File("./glucose_plugins/");
         if (!pluginDir.exists()) {
             j.info("Plugins directory does not exist, creating...");
             pluginDir.mkdirs();
+            j.info("Created plugins directory");
             // Loading will come soon
         }
     }

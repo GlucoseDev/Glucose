@@ -18,4 +18,6 @@ public class Glucose {
 //            j.info("Done");
 //        }
 //    }
+    public static String contributors = "Tedster, ServL";
+    public static String lead = "SlimeDiamond";
 }

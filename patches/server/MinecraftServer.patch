@@ -184,14 +184,14 @@
           if (var2 != null) {
              try {
                 var2.close();
-@@ -637,6 +646,7 @@
+@@ -633,6 +642,7 @@
+    protected void runServer() {
+       try {
+          if (this.initServer()) {
++            new GlucoseEventHandler().serverInitializeEvent(); // Glucose
+             this.nextTickTime = Util.getMillis();
              this.status.setDescription(new TextComponent(this.motd));
              this.status.setVersion(new ServerStatus.Version(SharedConstants.getCurrentVersion().getName(), SharedConstants.getCurrentVersion().getProtocolVersion()));
-             this.updateStatusIcon(this.status);
-+            new GlucoseEventHandler().serverInitializeEvent(); // Glucose
- 
-             while(this.running) {
-                long var1 = Util.getMillis() - this.nextTickTime;
 @@ -726,10 +736,10 @@
           return true;
        } else {

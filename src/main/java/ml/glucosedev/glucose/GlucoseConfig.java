@@ -18,9 +18,11 @@ public class GlucoseConfig {
 
                 glucoseProp.setProperty("joinMessage", "%player% &ejoined the game");
                 glucoseProp.setProperty("leaveMessage", "%player% &eleft the game");
+                glucoseProp.setProperty("tnt-explodes", String.valueOf(true));
                 glucoseProp.setProperty("unknown-command", "&cUnknown command... Use /help for help");
 
-                glucoseProp.store(output, "Coming soon...");
+                glucoseProp.store(output, "Will work very soon! :)");
+                j.info("Created properties file");
             } catch(IOException e) {
                 e.printStackTrace();
             }

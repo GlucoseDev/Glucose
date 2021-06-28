@@ -22,7 +22,7 @@ public class GlucoseEventHandler {
 
     }
 
-    public static void fireEvent(Event event) {
+    public static void fireEvent() {
 
     }
 }
