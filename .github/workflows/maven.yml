@@ -17,6 +17,8 @@ jobs:
       with:
         java-version: '8'
         distribution: 'adopt'
+    - name: Setup
+      run: git submodule update --init
     - name: Decompile
       run: ./glucose d
     - name: Patch
