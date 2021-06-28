@@ -1,5 +1,7 @@
 # Glucose
-Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vanilla Minecraft
+Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vanilla Minecraft and a bunch more.
+
+Currently under heavy development, if you wish to use this mod for production then it is recommended you do not.
 
 ## Prerequisites
 * [Java](http://java.oracle.com/) 8 (1.16.5 and below)
