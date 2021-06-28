@@ -1,4 +1,5 @@
-# Glucose
+![logo](https://glucosedev.ml/resources/glucose-imagine-small-removebg-preview.png)
+
 Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vanilla Minecraft and a bunch more.
 
 Currently under heavy development, if you wish to use this mod for production then it is recommended you do not.
