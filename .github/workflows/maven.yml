@@ -3,11 +3,7 @@
 
 name: Java CI with Maven
 
-on:
-  push: 
-    branches: [ "1.17", "1.16.5", "1.16.5-Sticky" ]
-  pull_request:
-    branches: [ "1.17", "1.16.5", "1.16.5-Sticky" ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -21,5 +17,9 @@ jobs:
       with:
         java-version: '8'
         distribution: 'adopt'
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Decompile
+      run: ./glucose d
+    - name: Patch
+      run: ./glucose p
+    - name: Build
+      run: mvn clean install
