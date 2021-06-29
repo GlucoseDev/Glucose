@@ -1,4 +1,4 @@
-![logo](https://glucosedev.ml/resources/glucose-imagine-small-removebg-preview.png)
+![logo](https://glucosedev.ml/resources/glucose-banner-fixed_morecenter-removebg-preview.png)
 
 Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vanilla Minecraft and a bunch more.
 
