@@ -1,5 +1,8 @@
-[![CI Status](https://github.com/GlucoseDev/Glucose/workflows/Java%20CI%20With%20Maven/badge.svg)](https://github.com/GlucoseDev/Glucose/actions)
 ![logo](https://glucosedev.ml/resources/glucose-banner-fixed_morecenter-removebg-preview.png)
+[![CI Status](https://github.com/GlucoseDev/Glucose/workflows/Java%20CI%20With%20Maven/badge.svg)](https://github.com/GlucoseDev/Glucose/actions)
+[![GitHub contributors](https://img.shields.io/github/contributors/GlucoseDev/Glucose.svg)](https://GitHub.com/GlucoseDev/Glucose/graphs/contributors/)
+[![Discord](https://img.shields.io/discord/850534433274462220.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/nMGg42rnt3)
+[![GitHub license](https://img.shields.io/github/license/GlucoseDev/Glucose.svg)](https://github.com/GlucoseDev/Glucose/blob/1.16.5-Sticky/LICENSE)
 
 Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vanilla Minecraft and a bunch more.
 
