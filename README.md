@@ -1,3 +1,4 @@
+[![CI Status](https://github.com/GlucoseDev/Glucose/workflows/Java%20CI%20With%20Maven/badge.svg)](https://github.com/GlucoseDev/Glucose/actions)
 ![logo](https://glucosedev.ml/resources/glucose-banner-fixed_morecenter-removebg-preview.png)
 
 Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vanilla Minecraft and a bunch more.
