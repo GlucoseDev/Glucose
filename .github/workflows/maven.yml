@@ -18,7 +18,7 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
     - name: Setup
-      run: git submodule update --init
+      run: git submodule update --init; chmod +x Sticky/sticky.sh
     - name: Decompile
       run: ./glucose d
     - name: Patch
