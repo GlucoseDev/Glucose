@@ -105,7 +105,7 @@
         <dependency>
             <groupId>ml.glucosedev</groupId>
             <artifactId>GlucoseLib</artifactId>
-            <version>1.0.1-BETA</version>
+            <version>1.0.2-BETA</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
