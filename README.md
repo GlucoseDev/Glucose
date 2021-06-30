@@ -29,7 +29,7 @@ What you will need to do is clone this repository, and run `./glucose d`, then c
 You can just run `./glucose rbp` to make patches.
 ## Building
 ```bash
-git clone git@github.com:GlucoseDev/Glucose
+git clone git@github.com:GlucoseDev/Glucose.git
 cd Glucose
 ./glucose decompile
 ./glucose patch
