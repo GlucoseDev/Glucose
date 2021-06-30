@@ -18,7 +18,7 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Setup
-      run: git submodule update --init; chmod +x Sticky/sticky.sh
+      run: git submodule update --init; chmod +x Sticky/sticky.sh; wget https://glucosedev.ml/releases/beta/GlucoseLib-1.0.2-BETA.jar; mvn install:install-file -Dfile=GlucoseLib/target/GlucoseLib-1.0.2-BETA.jar -DgroupId=ml.glucosedev -DartifactId=GlucoseLib -Dversion=1.0.2-BETA -Dpackaging=jar -DgeneratePom=true
     - name: Decompile
       run: ./glucose d
     - name: Patch
