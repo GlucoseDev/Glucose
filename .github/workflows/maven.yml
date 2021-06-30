@@ -25,7 +25,3 @@ jobs:
       run: ./glucose p
     - name: Build
       run: mvn clean install
-
-Glucose/.github/workflows/
-in
-1.16.5-Sticky
