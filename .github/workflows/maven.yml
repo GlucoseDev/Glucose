@@ -18,10 +18,14 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Setup
-      run: git submodule update --init; chmod +x Sticky/sticky.sh; wget https://glucosedev.ml/releases/beta/GlucoseLib-1.0.2-BETA.jar; mvn install:install-file -Dfile=GlucoseLib/target/GlucoseLib-1.0.2-BETA.jar -DgroupId=ml.glucosedev -DartifactId=GlucoseLib -Dversion=1.0.2-BETA -Dpackaging=jar -DgeneratePom=true
+      run: git submodule update --init; chmod +x Sticky/sticky.sh; wget https://glucosedev.ml/releases/beta/GlucoseLib-1.0.2-BETA.jar; mvn install:install-file -Dfile=GlucoseLib-1.0.2-BETA.jar -DgroupId=ml.glucosedev -DartifactId=GlucoseLib -Dversion=1.0.2-BETA -Dpackaging=jar -DgeneratePom=true
     - name: Decompile
       run: ./glucose d
     - name: Patch
       run: ./glucose p
     - name: Build
       run: mvn clean install
+
+Glucose/.github/workflows/
+in
+1.16.5-Sticky
