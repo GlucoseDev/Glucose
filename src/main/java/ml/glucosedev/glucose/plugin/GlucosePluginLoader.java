@@ -37,6 +37,9 @@ public class GlucosePluginLoader {
                     } else if (zip.getEntry("plugin.yml") != null) {
                         j.warn("Bukkit/Spigot plugins are not supported on Glucose, ignoring jar file " + file.getName());
                         continue;
+                    } else if (zip.getEntry("bungee.yml") != null) {
+                        j.warn("BungeeCord plugins are not supported on Glucose, ignoring jar file {}", file.getName());
+                        continue;
                     } else {
                         j.warn("Could not find glucose.inf in jar file " + file.getName() + ", ignoring");
                         continue;
