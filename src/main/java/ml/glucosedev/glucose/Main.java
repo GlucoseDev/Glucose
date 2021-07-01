@@ -18,7 +18,7 @@ public class Main {
         j.info("------------------------------");
 
         new GlucoseEventHandler().beforeStartEvent();
-
+        /*
         OptionParser parser = new OptionParser();
         OptionSpecBuilder var2 = parser.accepts("nogui");
         OptionSpecBuilder var3 = parser.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");
@@ -41,12 +41,13 @@ public class Main {
                 parser.printHelpOn(System.err);
                 return;
             }
-            j.info("Starting Minecraft Server...");
-            net.minecraft.server.Main.main(options); // Starts Native Minecraft server
-
+         */
+            j.info("Starting Minecraft Server..."); //sdfoisdujfosdjfsdofsd
+            net.minecraft.server.Main.main(args); // Starts Native Minecraft server // FIXME: Exception in thread "main" java.lang.NoSuchMethodError: 'void net.minecraft.server.Main.main(joptsimple.OptionSet)' // Re-compiling often fixes this
+/*
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
-        }
+        }*/
     }
 }

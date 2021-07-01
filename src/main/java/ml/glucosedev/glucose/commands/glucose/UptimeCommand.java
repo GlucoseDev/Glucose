@@ -10,7 +10,7 @@ import java.lang.management.ManagementFactory;
 public class UptimeCommand {
     @Command(
             name = "uptime",
-            aliases = {"uptime"},
+            aliases = {"uptime", "up"},
             description = "Get the server uptime",
             permission = "glucose.uptime"
     )

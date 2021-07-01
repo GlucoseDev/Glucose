@@ -1,5 +1,6 @@
 package ml.glucosedev.glucose;
 
+import ml.glucosedev.glucose.plugin.GlucosePluginLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
