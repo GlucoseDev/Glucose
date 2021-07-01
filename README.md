@@ -37,7 +37,7 @@ cd Glucose
 ./glucose patch
 mvn clean install
 ```
-Make sure you have [Maven](https://maven.apache.org/) installed.
+Make sure you have [Gradle](https://gradle.org/) installed.
 
 You might need to do some tinkering to get it to work sometimes.
 ## Thanks to

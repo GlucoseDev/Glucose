@@ -1,7 +1,8 @@
 .cache/
 target/
 src/main/java/net/minecraft/
-*.jar
+#*.jar
+build/
 fernflower/
 src_back/
 store/
