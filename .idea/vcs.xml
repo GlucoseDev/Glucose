@@ -2,8 +2,5 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/GlucoseLib" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/Sticky" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/tools/Paperclip" vcs="Git" />
   </component>
 </project>
