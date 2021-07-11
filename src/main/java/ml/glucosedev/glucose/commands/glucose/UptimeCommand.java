@@ -1,6 +1,5 @@
 package ml.glucosedev.glucose.commands.glucose;
 
-import jdk.jfr.internal.JVM;
 import ml.glucosedev.glucoselib.command.Command;
 import ml.glucosedev.glucoselib.command.CommandCaller;
 import net.minecraft.ChatFormatting;

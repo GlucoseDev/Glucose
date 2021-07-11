@@ -2,11 +2,15 @@ package ml.glucosedev.glucose;
 
 //import jdk.internal.joptsimple.*;
 import joptsimple.*;
+import net.minecraft.SharedConstants;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.dedicated.DedicatedServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
 
 public class Main {
     static Logger j = LogManager.getLogger();
@@ -18,36 +22,12 @@ public class Main {
         j.info("------------------------------");
 
         new GlucoseEventHandler().beforeStartEvent();
-        /*
-        OptionParser parser = new OptionParser();
-        OptionSpecBuilder var2 = parser.accepts("nogui");
-        OptionSpecBuilder var3 = parser.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");
-        OptionSpecBuilder var4 = parser.accepts("demo");
-        OptionSpecBuilder var5 = parser.accepts("bonusChest");
-        OptionSpecBuilder var6 = parser.accepts("forceUpgrade");
-        OptionSpecBuilder var7 = parser.accepts("eraseCache");
-        OptionSpecBuilder var8 = parser.accepts("safeMode", "Loads level with vanilla datapack only");
-        AbstractOptionSpec var9 = parser.accepts("help").forHelp();
-        ArgumentAcceptingOptionSpec var10 = parser.accepts("singleplayer").withRequiredArg();
-        ArgumentAcceptingOptionSpec var11 = parser.accepts("universe").withRequiredArg().defaultsTo(".", new String[0]);
-        ArgumentAcceptingOptionSpec var12 = parser.accepts("world").withRequiredArg();
-        ArgumentAcceptingOptionSpec var13 = parser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(-1, new Integer[0]);
-        ArgumentAcceptingOptionSpec var14 = parser.accepts("serverId").withRequiredArg();
-        NonOptionArgumentSpec var15 = parser.nonOptions();
-
-        try {
-            OptionSet options = parser.parse(args);
-            if (options.has(var9)) {
-                parser.printHelpOn(System.err);
-                return;
-            }
-         */
             j.info("Starting Minecraft Server..."); //sdfoisdujfosdjfsdofsd
-            net.minecraft.server.Main.main(args); // Starts Native Minecraft server // FIXME: Exception in thread "main" java.lang.NoSuchMethodError: 'void net.minecraft.server.Main.main(joptsimple.OptionSet)' // Re-compiling often fixes this
-/*
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(1);
-        }*/
+            if (!(SharedConstants.getCurrentVersion().getName().startsWith("1.17") && ManagementFactory.getRuntimeMXBean().getVmVersion().equals("1.16"))) {
+                j.error("You are not running on Java 16, as of Minecraft 1.17, Java 16 is required.");
+                j.info("Download Java 16 here: https://www.oracle.com/java/technologies/javase-downloads.html#JDK16");
+                System.exit(0);
+            }
+            net.minecraft.server.Main.main(args); // Start native Minecraft server
     }
 }

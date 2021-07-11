@@ -1,32 +1,25 @@
 --- a/net/minecraft/server/MinecraftServer.java
 +++ b/net/minecraft/server/MinecraftServer.java
-@@ -9,6 +9,7 @@
- import com.mojang.authlib.GameProfileRepository;
- import com.mojang.authlib.minecraft.MinecraftSessionService;
- import com.mojang.datafixers.DataFixer;
-+import ml.glucosedev.glucose.Glucose;
- import io.netty.buffer.ByteBuf;
- import io.netty.buffer.ByteBufOutputStream;
- import io.netty.buffer.Unpooled;
-@@ -54,6 +55,8 @@
+@@ -53,6 +53,9 @@
  import java.util.stream.Stream;
  import javax.annotation.Nullable;
  import javax.imageio.ImageIO;
 +
++import ml.glucosedev.glucose.Glucose;
 +import ml.glucosedev.glucose.GlucoseEventHandler;
  import net.minecraft.CrashReport;
  import net.minecraft.ReportedException;
  import net.minecraft.SharedConstants;
-@@ -133,6 +136,8 @@
+@@ -143,6 +146,8 @@
  import net.minecraft.world.level.levelgen.PhantomSpawner;
  import net.minecraft.world.level.levelgen.WorldGenSettings;
  import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 +import net.minecraft.world.level.levelgen.feature.Feature;
 +import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
  import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
- import net.minecraft.world.level.saveddata.SaveDataDirtyRunnable;
  import net.minecraft.world.level.storage.CommandStorage;
-@@ -221,18 +226,20 @@
+ import net.minecraft.world.level.storage.DerivedLevelData;
+@@ -252,18 +257,20 @@
     private final StructureManager structureManager;
     protected final WorldData worldData;
  
@@ -56,8 +49,21 @@
 +      return s0;
     }
  
-    public MinecraftServer(Thread var1, RegistryAccess.RegistryHolder var2, LevelStorageSource.LevelStorageAccess var3, WorldData var4, PackRepository var5, Proxy var6, DataFixer var7, ServerResources var8, MinecraftSessionService var9, GameProfileRepository var10, GameProfileCache var11, ChunkProgressListenerFactory var12) {
-@@ -321,9 +328,9 @@
+    public MinecraftServer(Thread var1, RegistryAccess.RegistryHolder var2, LevelStorageSource.LevelStorageAccess var3, WorldData var4, PackRepository var5, Proxy var6, DataFixer var7, ServerResources var8, @Nullable MinecraftSessionService var9, @Nullable GameProfileRepository var10, @Nullable GameProfileCache var11, ChunkProgressListenerFactory var12) {
+@@ -313,10 +320,10 @@
+    private void readScoreboard(DimensionDataStorage var1) {
+       ServerScoreboard var10001 = this.getScoreboard();
+       Objects.requireNonNull(var10001);
+-      Function var2 = var10001::createData;
++      Function<net.minecraft.nbt.CompoundTag, net.minecraft.world.scores.ScoreboardSaveData> function = var10001::createData; // Glucose
+       ServerScoreboard var10002 = this.getScoreboard();
+       Objects.requireNonNull(var10002);
+-      var1.computeIfAbsent(var2, var10002::createData, "scoreboard");
++//      var1.computeIfAbsent(var2, var10002::createData, "scoreboard"); // Glucose :: Remove line (buggy boi)
+    }
+ 
+    protected abstract boolean initServer() throws IOException;
+@@ -370,9 +377,9 @@
        long var5 = var3.seed();
        long var7 = BiomeManager.obfuscateSeed(var5);
        ImmutableList var9 = ImmutableList.of(new PhantomSpawner(), new PatrolSpawner(), new CatSpawner(), new VillageSiege(), new WanderingTraderSpawner(var2));
@@ -69,8 +75,8 @@
 +      ChunkGenerator var11;
        DimensionType var13;
        if (var12 == null) {
-          var13 = (DimensionType)this.registryHolder.dimensionTypes().getOrThrow(DimensionType.OVERWORLD_LOCATION);
-@@ -333,7 +340,7 @@
+          var13 = (DimensionType)this.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrThrow(DimensionType.OVERWORLD_LOCATION);
+@@ -382,7 +389,7 @@
           var11 = var12.generator();
        }
  
@@ -79,7 +85,7 @@
        this.levels.put(Level.OVERWORLD, var14);
        DimensionDataStorage var15 = var14.getDataStorage();
        this.readScoreboard(var15);
-@@ -366,15 +373,15 @@
+@@ -415,15 +422,15 @@
           this.getCustomBossEvents().load(this.worldData.getCustomBossEvents());
        }
  
@@ -101,29 +107,7 @@
              DerivedLevelData var23 = new DerivedLevelData(this.worldData, var2);
              ServerLevel var24 = new ServerLevel(this, this.executor, this.storageSource, var23, var20, var21, var1, var22, var4, var7, ImmutableList.of(), false);
              var16.addListener(new BorderChangeListener.DelegateBorderChangeListener(var24.getWorldBorder()));
-@@ -402,10 +409,10 @@
-          }
- 
-          boolean var10 = false;
--         Iterator var11 = BlockTags.VALID_SPAWN.getValues().iterator();
-+         Iterator<Block> var11 = BlockTags.VALID_SPAWN.getValues().iterator();
- 
-          while(var11.hasNext()) {
--            Block var12 = (Block)var11.next();
-+            Block var12 = var11.next();
-             if (var6.getSurfaceBlocks().contains(var12.defaultBlockState())) {
-                var10 = true;
-                break;
-@@ -439,7 +446,7 @@
-          }
- 
-          if (var2) {
--            ConfiguredFeature var20 = Features.BONUS_CHEST;
-+            ConfiguredFeature<net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration, net.minecraft.world.level.levelgen.feature.Feature<net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration>> var20 = (ConfiguredFeature<FeatureConfiguration, Feature<FeatureConfiguration>>) Features.BONUS_CHEST; // Glucose :: Casted
-             var20.place(var0, var5, var0.random, new BlockPos(var1.getXSpawn(), var1.getYSpawn(), var1.getZSpawn()));
-          }
- 
-@@ -474,7 +481,7 @@
+@@ -527,7 +534,7 @@
  
        this.nextTickTime = Util.getMillis() + 10L;
        this.waitUntilNextTick();
@@ -132,16 +116,7 @@
  
        while(true) {
           ServerLevel var6;
-@@ -489,7 +496,7 @@
-                return;
-             }
- 
--            var6 = (ServerLevel)var5.next();
-+            var6 = var5.next();
-             var7 = (ForcedChunksSavedData)var6.getDataStorage().get(ForcedChunksSavedData::new, "chunks");
-          } while(var7 == null);
- 
-@@ -534,8 +541,8 @@
+@@ -587,8 +594,8 @@
     public boolean saveAllChunks(boolean var1, boolean var2, boolean var3) {
        boolean var4 = false;
  
@@ -152,7 +127,7 @@
           if (!var1) {
              LOGGER.info("Saving chunks for level '{}'/{}", var6, var6.dimension().location());
           }
-@@ -561,6 +568,8 @@
+@@ -625,6 +632,8 @@
           this.getConnection().stop();
        }
  
@@ -161,7 +136,7 @@
        if (this.playerList != null) {
           LOGGER.info("Saving players");
           this.playerList.saveAll();
-@@ -568,11 +577,11 @@
+@@ -632,11 +641,11 @@
        }
  
        LOGGER.info("Saving worlds");
@@ -175,7 +150,7 @@
           if (var2 != null) {
              var2.noSave = false;
           }
-@@ -582,7 +591,7 @@
+@@ -646,7 +655,7 @@
        var1 = this.getAllLevels().iterator();
  
        while(var1.hasNext()) {
@@ -184,7 +159,7 @@
           if (var2 != null) {
              try {
                 var2.close();
-@@ -633,6 +642,7 @@
+@@ -697,6 +706,7 @@
     protected void runServer() {
        try {
           if (this.initServer()) {
@@ -192,7 +167,7 @@
              this.nextTickTime = Util.getMillis();
              this.status.setDescription(new TextComponent(this.motd));
              this.status.setVersion(new ServerStatus.Version(SharedConstants.getCurrentVersion().getName(), SharedConstants.getCurrentVersion().getProtocolVersion()));
-@@ -726,10 +736,10 @@
+@@ -796,10 +806,10 @@
           return true;
        } else {
           if (this.haveTime()) {
@@ -205,7 +180,32 @@
                 if (var2.getChunkSource().pollTask()) {
                    return true;
                 }
-@@ -829,10 +839,10 @@
+@@ -810,7 +820,7 @@
+       }
+    }
+ 
+-   protected void doRunTask(TickTask var1) {
++   public void doRunTask(TickTask var1) {
+       this.getProfiler().incrementCounter("runTask");
+       super.doRunTask(var1);
+    }
+@@ -823,11 +833,11 @@
+ 
+       var2.ifPresent((var1x) -> {
+          try {
+-            BufferedImage var2 = ImageIO.read(var1x);
+-            Validate.validState(var2.getWidth() == 64, "Must be 64 pixels wide", new Object[0]);
+-            Validate.validState(var2.getHeight() == 64, "Must be 64 pixels high", new Object[0]);
++            BufferedImage var22 = ImageIO.read((File) var1x); // Glucose :: casted to File
++            Validate.validState(var22.getWidth() == 64, "Must be 64 pixels wide", new Object[0]);
++            Validate.validState(var22.getHeight() == 64, "Must be 64 pixels high", new Object[0]);
+             ByteArrayOutputStream var3 = new ByteArrayOutputStream();
+-            ImageIO.write(var2, "PNG", var3);
++            ImageIO.write(var22, "PNG", var3);
+             byte[] var4 = Base64.getEncoder().encode(var3.toByteArray());
+             String var10001 = new String(var4, StandardCharsets.UTF_8);
+             var1.setFavicon("data:image/png;base64," + var10001);
+@@ -901,10 +911,10 @@
        this.profiler.push("commandFunctions");
        this.getFunctions().tick();
        this.profiler.popPush("levels");
@@ -218,42 +218,45 @@
           this.profiler.push(() -> {
              return var3 + " " + var3.dimension().location();
           });
-@@ -923,7 +933,7 @@
-    }
+@@ -1000,7 +1010,7 @@
  
+    @DontObfuscate
     public String getServerModName() {
 -      return "vanilla";
 +      return Glucose.getImplName(); // Glucose :: Set mod name
     }
  
-    public CrashReport fillReport(CrashReport var1) {
-@@ -934,18 +944,18 @@
+    public SystemReport fillSystemReport(SystemReport var1) {
+@@ -1012,22 +1022,22 @@
        }
  
-       var1.getSystemDetails().setDetail("Data Packs", () -> {
+       var1.setDetail("Data Packs", () -> {
 -         StringBuilder var1 = new StringBuilder();
--         Iterator var2 = this.packRepository.getSelectedPacks().iterator();
-+         StringBuilder stringBuilder = new StringBuilder();
-+         Iterator<Pack> var2 = this.packRepository.getSelectedPacks().iterator();
++         StringBuilder var10 = new StringBuilder();
+          Iterator var2 = this.packRepository.getSelectedPacks().iterator();
  
           while(var2.hasNext()) {
--            Pack var3 = (Pack)var2.next();
+             Pack var3 = (Pack)var2.next();
 -            if (var1.length() > 0) {
 -               var1.append(", ");
-+            Pack var3 = var2.next();
-+            if (stringBuilder.length() > 0) {
-+               stringBuilder.append(", ");
++            if (var10.length() > 0) {
++               var10.append(", ");
              }
  
 -            var1.append(var3.getId());
-+            stringBuilder.append(var3.getId());
++            var10.append(var3.getId());
              if (!var3.getCompatibility().isCompatible()) {
 -               var1.append(" (incompatible)");
-+               stringBuilder.append(" (incompatible)");
++               var10.append(" (incompatible)");
              }
           }
  
-@@ -1013,10 +1023,10 @@
+-         return var1.toString();
++         return var10.toString();
+       });
+       if (this.serverId != null) {
+          var1.setDetail("Server Id", () -> {
+@@ -1093,10 +1103,10 @@
     }
  
     private void updateMobSpawningFlags() {
@@ -266,7 +269,7 @@
           var2.setSpawnSettings(this.isSpawningMonsters(), this.isSpawningAnimals());
        }
  
-@@ -1071,10 +1081,10 @@
+@@ -1151,10 +1161,10 @@
        var1.setDynamicData("run_time", (Util.getMillis() - var1.getStartupTime()) / 60L * 1000L);
        var1.setDynamicData("avg_tick_ms", (int)(Mth.average(this.tickTimes) * 1.0E-6D));
        int var2 = 0;
@@ -279,7 +282,7 @@
           if (var4 != null) {
              var1.setDynamicData("world[" + var2 + "][dimension]", var4.dimension().location());
              var1.setDynamicData("world[" + var2 + "][mode]", this.worldData.getGameType());
-@@ -1271,8 +1281,8 @@
+@@ -1360,8 +1370,8 @@
     }
  
     public CompletableFuture<Void> reloadResources(Collection<String> var1) {
@@ -288,10 +291,10 @@
 +      CompletableFuture<Void> var2 = CompletableFuture.supplyAsync(() -> {
 +         Stream<String> var10000 = var1.stream(); // Glucose -- Ty Loom :P
           PackRepository var10001 = this.packRepository;
-          var10001.getClass();
+          Objects.requireNonNull(var10001);
           return (ImmutableList)var10000.map(var10001::getPack).filter(Objects::nonNull).map(Pack::open).collect(ImmutableList.toImmutableList());
-@@ -1280,10 +1290,10 @@
-          return ServerResources.loadResources(var1x, this.isDedicatedServer() ? Commands.CommandSelection.DEDICATED : Commands.CommandSelection.INTEGRATED, this.getFunctionCompilationLevel(), this.executor, this);
+@@ -1369,10 +1379,10 @@
+          return ServerResources.loadResources(var1x, this.registryHolder, this.isDedicatedServer() ? Commands.CommandSelection.DEDICATED : Commands.CommandSelection.INTEGRATED, this.getFunctionCompilationLevel(), this.executor, this);
        }).thenAcceptAsync((var2x) -> {
           this.resources.close();
 -         this.resources = var2x;
@@ -303,7 +306,7 @@
           this.getPlayerList().saveAll();
           this.getPlayerList().reloadResources();
           this.functionManager.replaceLibrary(this.resources.getFunctionLibrary());
-@@ -1336,8 +1346,8 @@
+@@ -1426,8 +1436,8 @@
     }
  
     private static DataPackConfig getSelectedPacks(PackRepository var0) {
@@ -314,39 +317,7 @@
        List var3 = (List)var0.getAvailableIds().stream().filter((var1x) -> {
           return !var1.contains(var1x);
        }).collect(ImmutableList.toImmutableList());
-@@ -1455,14 +1465,14 @@
- 
-    public void saveDebugReport(Path var1) throws IOException {
-       Path var2 = var1.resolve("levels");
--      Iterator var3 = this.levels.entrySet().iterator();
-+      Iterator<Entry<ResourceKey<Level>, ServerLevel>> var3 = this.levels.entrySet().iterator();
- 
-       while(var3.hasNext()) {
--         Entry var4 = (Entry)var3.next();
--         ResourceLocation var5 = ((ResourceKey)var4.getKey()).location();
-+         Entry<ResourceKey<Level>, ServerLevel> var4 = var3.next();
-+         ResourceLocation var5 = (var4.getKey()).location();
-          Path var6 = var2.resolve(var5.getNamespace()).resolve(var5.getPath());
-          Files.createDirectories(var6);
--         ((ServerLevel)var4.getValue()).saveDebugReport(var6);
-+         (var4.getValue()).saveDebugReport(var6);
-       }
- 
-       this.dumpGameRules(var1.resolve("gamerules.txt"));
-@@ -1574,10 +1584,10 @@
-       try {
-          String var4 = System.getProperty("java.class.path");
-          String var5 = System.getProperty("path.separator");
--         Iterator var6 = Splitter.on(var5).split(var4).iterator();
-+         Iterator<String> var6 = Splitter.on(var5).split(var4).iterator();
- 
-          while(var6.hasNext()) {
--            String var7 = (String)var6.next();
-+            String var7 = var6.next();
-             var2.write(var7);
-             var2.write("\n");
-          }
-@@ -1694,6 +1704,7 @@
+@@ -1813,6 +1823,7 @@
     }
  
     // $FF: synthetic method
@@ -354,7 +325,7 @@
     public void doRunTask(Runnable var1) {
        this.doRunTask((TickTask)var1);
     }
-@@ -1707,6 +1718,7 @@
+@@ -1826,6 +1837,7 @@
     public Runnable wrapRunnable(Runnable var1) {
        return this.wrapRunnable(var1);
     }

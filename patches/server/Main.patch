@@ -15,8 +15,8 @@
 +import joptsimple.*;
  import net.minecraft.CrashReport;
  import net.minecraft.DefaultUncaughtExceptionHandler;
- import net.minecraft.Util;
-@@ -54,6 +51,7 @@
+ import net.minecraft.SharedConstants;
+@@ -58,6 +55,7 @@
  import net.minecraft.world.level.storage.WorldData;
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
@@ -24,16 +24,7 @@
  
  public class Main {
     private static final Logger LOGGER = LogManager.getLogger();
-@@ -61,7 +59,7 @@
-    public Main() {
-    }
- 
--   public static void main(String[] var0) {
-+   public static void main(@NotNull String[] var0) {
-       OptionParser var1 = new OptionParser();
-       OptionSpecBuilder var2 = var1.accepts("nogui");
-       OptionSpecBuilder var3 = var1.accepts("initSettings", "Initializes 'server.properties' and 'eula.txt', then quits");
-@@ -79,7 +77,7 @@
+@@ -85,7 +83,7 @@
        NonOptionArgumentSpec var15 = var1.nonOptions();
  
        try {
@@ -42,15 +33,7 @@
           if (var16.has(var9)) {
              var1.printHelpOn(System.err);
              return;
-@@ -91,6 +89,7 @@
-          Util.startTimerHackThread();
-          RegistryAccess.RegistryHolder var17 = RegistryAccess.builtin();
-          Path var18 = Paths.get("server.properties");
-+         Path glucoseProp = Paths.get("glucose.properties");
-          DedicatedServerSettings var19 = new DedicatedServerSettings(var17, var18);
-          var19.forceSave();
-          Path var20 = Paths.get("eula.txt");
-@@ -101,7 +100,7 @@
+@@ -107,7 +105,7 @@
           }
  
           if (!var21.hasAgreedToEULA()) {
@@ -59,14 +42,14 @@
              return;
           }
  
-@@ -158,14 +157,15 @@
+@@ -171,14 +169,15 @@
           }
  
-          var29.saveDataTag(var17, (WorldData)var37);
-+         Object finalVar3 = var37;
-          final DedicatedServer var43 = (DedicatedServer)MinecraftServer.spin((var16x) -> {
--            DedicatedServer var17x = new DedicatedServer(var16x, var17, var29, var32, var35, var37, var19, DataFixers.getDataFixer(), var24, var25, var26, LoggerChunkProgressListener::new);
-+            DedicatedServer var17x = new DedicatedServer(var16x, var17, var29, var32, var35, (WorldData) finalVar3, var19, DataFixers.getDataFixer(), var24, var25, var26, LoggerChunkProgressListener::new); // Glucose :: casted finalVar3
+          var29.saveDataTag(var17, (WorldData)var38);
++         Object finalVar3 = var38; // Glucose
+          final DedicatedServer var44 = (DedicatedServer)MinecraftServer.spin((var16x) -> {
+-            DedicatedServer var17x = new DedicatedServer(var16x, var17, var29, var33, var36, var38, var19, DataFixers.getDataFixer(), var24, var25, var26, LoggerChunkProgressListener::new);
++            DedicatedServer var17x = new DedicatedServer(var16x, var17, var29, var33, var36, (WorldData) finalVar3, var19, DataFixers.getDataFixer(), var24, var25, var26, LoggerChunkProgressListener::new); // Glucose :: cast, made final
              var17x.setSingleplayerName((String)var16.valueOf(var10));
              var17x.setPort((Integer)var16.valueOf(var13));
              var17x.setDemo(var16.has(var4));

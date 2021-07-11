@@ -1,15 +1,15 @@
 --- a/net/minecraft/world/entity/player/Player.java
 +++ b/net/minecraft/world/entity/player/Player.java
-@@ -110,7 +110,7 @@
- 
- public abstract class Player extends LivingEntity {
+@@ -124,7 +124,7 @@
+    public static final float SWIMMING_BB_HEIGHT = 0.6F;
+    public static final float DEFAULT_EYE_HEIGHT = 1.62F;
     public static final EntityDimensions STANDING_DIMENSIONS = EntityDimensions.scalable(0.6F, 1.8F);
 -   private static final Map<Pose, EntityDimensions> POSES;
 +   private static final ImmutableMap<Object, Object> POSES;
+    private static final int FLY_ACHIEVEMENT_SPEED = 25;
     private static final EntityDataAccessor<Float> DATA_PLAYER_ABSORPTION_ID;
     private static final EntityDataAccessor<Integer> DATA_SCORE_ID;
-    protected static final EntityDataAccessor<Byte> DATA_PLAYER_MODE_CUSTOMISATION;
-@@ -1902,7 +1902,7 @@
+@@ -1990,7 +1990,7 @@
     }
  
     static {

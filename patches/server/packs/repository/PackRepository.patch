@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/packs/repository/PackRepository.java
 +++ b/net/minecraft/server/packs/repository/PackRepository.java
-@@ -97,7 +97,7 @@
+@@ -100,7 +100,7 @@
     }
  
     @Nullable

@@ -1,16 +1,15 @@
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -19,6 +19,9 @@
+@@ -22,6 +22,8 @@
  import java.util.function.BooleanSupplier;
  import java.util.regex.Pattern;
  import javax.annotation.Nullable;
 +
 +import ml.glucosedev.glucose.GlucoseEventHandler;
-+//import jdk.internal.joptsimple.internal.Strings;
- import net.minecraft.CrashReport;
  import net.minecraft.DefaultUncaughtExceptionHandler;
  import net.minecraft.DefaultUncaughtExceptionHandlerWithName;
-@@ -138,9 +141,9 @@
+ import net.minecraft.SharedConstants;
+@@ -146,9 +148,9 @@
        try {
           this.getConnection().startTcpServerListener(var3, this.getPort());
        } catch (IOException var10) {
@@ -23,9 +22,9 @@
           return false;
        }
  
-@@ -164,11 +167,14 @@
-          SkullBlockEntity.setProfileCache(this.getProfileCache());
+@@ -172,11 +174,14 @@
           SkullBlockEntity.setSessionService(this.getSessionService());
+          SkullBlockEntity.setMainThreadExecutor(this);
           GameProfileCache.setUsesAuthentication(this.usesAuthentication());
 +         // Glucose start
 +         new GlucoseEventHandler().serverStartEvent();
@@ -39,7 +38,7 @@
           if (var2.announcePlayerAchievements != null) {
              ((GameRules.BooleanValue)this.getGameRules().getRule(GameRules.RULE_ANNOUNCE_ADVANCEMENTS)).set(var2.announcePlayerAchievements, this);
           }
-@@ -536,7 +542,9 @@
+@@ -605,7 +610,9 @@
     }
  
     // $FF: synthetic method
