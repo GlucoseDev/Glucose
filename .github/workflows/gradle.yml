@@ -1,7 +1,4 @@
-# This workflow will build a Java project with Maven
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-maven
-
-name: Java CI With Maven
+name: Java CI With Gradle
 
 on: [push, pull_request]
 
@@ -24,4 +21,4 @@ jobs:
     - name: Patch
       run: ./glucose p
     - name: Build
-      run: mvn clean install
+      run: gradle shadowJar

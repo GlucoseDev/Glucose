@@ -1,0 +1,94 @@
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
+    }
+}
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id "com.github.onslip.gradle-one-jar" version "1.0.6"
+    id 'com.github.johnrengelman.shadow' version '5.1.0'
+}
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+repositories {
+    mavenLocal()
+    maven {
+        url = uri('https://repo.maven.apache.org/maven2/')
+    }
+    flatDir {
+        dirs 'libs' // ./libs directory
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar']) // this should include the deobf jar
+//    implementation 'glucose:minecraft-server:1.16.5-SNAPSHOT' // Moved to libs dir (uhh, yay maven?)
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'org.apache.logging.log4j:log4j-core:2.13.2'
+    implementation 'org.apache.logging.log4j:log4j-iostreams:2.8.1'
+    implementation 'net.minecrell:terminalconsoleappender:1.2.0'
+    implementation 'commons-io:commons-io:2.9.0'
+    implementation 'org.jetbrains:annotations:16.0.2'
+    implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
+//    implementation 'ml.glucosedev:GlucoseLib:1.0.2-BETA'
+//    implementation 'glucose.GlucoseLib:GlucoseLib-1.0.4-BETA-gradle'
+    implementation 'net.kyori:adventure-api:4.2.0'
+    implementation 'net.kyori:adventure-text-serializer-gson:4.2.0'
+    runtimeOnly 'org.jline:jline-terminal-jansi:3.12.1'
+//    runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.8.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
+    runtimeOnly 'com.lmax:disruptor:3.4.2'
+}
+
+group = 'ml.glucosedev'
+version = '1.16.5-489'
+description = 'Glucose'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+var mainClass="ml.glucosedev.glucose.Main"
+jar {
+    manifest {
+        attributes "Main-Class": "$mainClass"
+    }
+
+//    from {
+//        configurations.collect { it.isDirectory() ? it : zipTree(it) }
+//    }
+}
+
+//    from {
+//        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+//    }
+task decompile(type: Exec) {
+    commandLine './glucose', 'd'
+}
+task patch(type: Exec) {
+    commandLine './glucose', 'p'
+}
+task rebuild(type: Exec) {
+    commandLine './glucose', 'rbp'
+}
+
+/*
+task make(type: Exec, Jar) {
+    decompile
+    patch
+//    build
+    fatJar
+}
+ */
+artifacts {
+    archives(tasks.shadowJar)
+}

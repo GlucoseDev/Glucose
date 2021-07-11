@@ -9,7 +9,8 @@ public class TestCommand {
             name = "test",
             aliases = {"test"},
             description = "A Glucose test command",
-            permission = "glucose.test"
+            permission = "glucose.test",
+            usage = "/test"
     )
     public void testCommand(CommandCaller caller) {
         caller.send("Hello! {}", testString); // Should replace {} like log4j
