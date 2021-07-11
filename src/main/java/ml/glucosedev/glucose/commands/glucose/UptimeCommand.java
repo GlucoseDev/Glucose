@@ -12,7 +12,8 @@ public class UptimeCommand {
             name = "uptime",
             aliases = {"uptime", "up"},
             description = "Get the server uptime",
-            permission = "glucose.uptime"
+            permission = "glucose.uptime",
+            usage = "/uptime"
     )
     public void uptimeCommand(CommandCaller caller) {
         caller.send(ChatFormatting.DARK_GREEN+"Server uptime: "+ChatFormatting.RESET+ ManagementFactory.getRuntimeMXBean().getUptime());
