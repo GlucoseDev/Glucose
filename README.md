@@ -12,7 +12,6 @@ Implementation of [GlucoseLib](https://github.com/GlucoseDev/GlucoseLib) on Vani
 ## Prerequisites
 * [Java](http://java.oracle.com/) 11 (1.16.5 and below)
 * [Java](http://java.oracle.com/) 16 (1.17+)
-> Note: 1.17 is not supported
 ## How to for server admins
 - Download from [releases](https://glucosedev.ml/releases/)
 - Run it like any other jar file
