@@ -1,5 +1,10 @@
 buildscript {
-
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'gradle.plugin.com.github.jengelman.gradle.plugins:shadow:7.0.0'
+    }
 }
 plugins {
     id 'java'
@@ -7,6 +12,8 @@ plugins {
     id "com.github.onslip.gradle-one-jar" version "1.0.6"
     id 'com.github.johnrengelman.shadow' version '5.1.0'
 }
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
 repositories {
     mavenLocal()
     maven {
@@ -38,7 +45,7 @@ dependencies {
 }
 
 group = 'ml.glucosedev'
-version = '1.16.5-480'
+version = '1.16.5-489'
 description = 'Glucose'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
@@ -60,20 +67,10 @@ jar {
 //        configurations.collect { it.isDirectory() ? it : zipTree(it) }
 //    }
 }
-apply plugin: 'java'
-apply plugin: 'com.github.johnrengelman.shadow'
 
 //    from {
 //        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
 //    }
-task fatJar(type: Jar) {
-    manifest {
-        attributes "Main-Class": "$mainClass"
-    }
-    baseName = 'Glucose'
-    configurations.compileClasspath.filter{ it.exists() }.collect { it.isDirectory() ? it : zipTree(it) }
-    with jar
-}
 task decompile(type: Exec) {
     commandLine './glucose', 'd'
 }
