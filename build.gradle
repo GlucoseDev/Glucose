@@ -80,6 +80,7 @@ task patch(type: Exec) {
 task rebuild(type: Exec) {
     commandLine './glucose', 'rbp'
 }
+
 /*
 task make(type: Exec, Jar) {
     decompile
@@ -88,3 +89,6 @@ task make(type: Exec, Jar) {
     fatJar
 }
  */
+artifacts {
+    archives(tasks.shadowJar)
+}
