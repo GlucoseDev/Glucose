@@ -90,6 +90,11 @@ task make(type: Exec, Jar) {
     fatJar
 }
  */
+shadowJar {
+    manifest {
+        attributes 'Multi-Release': 'true'
+    }
+}
 artifacts {
     archives(tasks.shadowJar)
 }

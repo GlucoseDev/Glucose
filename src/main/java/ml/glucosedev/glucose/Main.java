@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 
 public class Main {
-    static Logger j = LogManager.getLogger();
+    static Logger j = LogManager.getLogger("Glucose");
     public static void main(@NotNull final String[] args) {
         j.info("------------------------------");
         j.info("Glucose");
@@ -23,7 +23,8 @@ public class Main {
 
         new GlucoseEventHandler().beforeStartEvent();
             j.info("Starting Minecraft Server..."); //sdfoisdujfosdjfsdofsd
-            if (!(SharedConstants.getCurrentVersion().getName().startsWith("1.17") && ManagementFactory.getRuntimeMXBean().getVmVersion().equals("1.16"))) {
+            if (!(ManagementFactory.getRuntimeMXBean().getVmVersion().startsWith("16"))) {
+//                j.info("Java version: "+ManagementFactory.getRuntimeMXBean().getVmVersion());
                 j.error("You are not running on Java 16, as of Minecraft 1.17, Java 16 is required.");
                 j.info("Download Java 16 here: https://www.oracle.com/java/technologies/javase-downloads.html#JDK16");
                 System.exit(0);
