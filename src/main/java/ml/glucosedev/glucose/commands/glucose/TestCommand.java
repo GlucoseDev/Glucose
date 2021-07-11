@@ -2,8 +2,10 @@ package ml.glucosedev.glucose.commands.glucose;
 
 import ml.glucosedev.glucoselib.command.Command;
 import ml.glucosedev.glucoselib.command.CommandCaller;
+import ml.glucosedev.glucoselib.command.CommandContext;
+import ml.glucosedev.glucoselib.command.CommandExecutor;
 
-public class TestCommand {
+public class TestCommand implements CommandExecutor {
     String testString = "Element";
     @Command(
             name = "test",
@@ -12,7 +14,8 @@ public class TestCommand {
             permission = "glucose.test",
             usage = "/test"
     )
-    public void testCommand(CommandCaller caller) {
-        caller.send("Hello! {}", testString); // Should replace {} like log4j
+    public void execute(CommandContext context) {
+        CommandCaller caller = context.getCaller();
+        caller.send("Hello!");
     }
 }

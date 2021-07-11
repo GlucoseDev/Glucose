@@ -4,9 +4,12 @@ import ml.glucosedev.glucose.Glucose;
 import ml.glucosedev.glucose.commands.NativeCommand;
 import ml.glucosedev.glucoselib.command.Command;
 import ml.glucosedev.glucoselib.command.CommandCaller;
+import ml.glucosedev.glucoselib.command.CommandContext;
+import ml.glucosedev.glucoselib.command.CommandExecutor;
 import net.minecraft.ChatFormatting;
+import org.jetbrains.annotations.NotNull;
 
-public class GlucoseCommand implements NativeCommand {
+public class GlucoseCommand implements CommandExecutor {
     @Command(
             name = "Glucose main command",
             aliases = {"glucose"},
@@ -14,7 +17,8 @@ public class GlucoseCommand implements NativeCommand {
             permission = "glucose.glucose",
             usage = "/glucose"
     )
-    public void execute(CommandCaller caller, String[] args) {
+    public void execute(CommandContext context) {
+        CommandCaller caller = context.getCaller();
         //CommandCaller caller = CommandContext.getCaller();
         caller.send(ChatFormatting.DARK_GREEN+"--- Glucose ---");
         caller.send(ChatFormatting.DARK_GREEN+"Lead developers: "+ChatFormatting.RESET+ Glucose.lead);
@@ -22,4 +26,5 @@ public class GlucoseCommand implements NativeCommand {
         caller.send(ChatFormatting.DARK_GREEN+"GitHub: "+ChatFormatting.RESET+"https://github.com/GlucoseDev/Glucose");
 
     }
+
 }
