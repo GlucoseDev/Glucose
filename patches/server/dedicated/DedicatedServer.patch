@@ -22,6 +22,15 @@
           return false;
        }
  
+@@ -156,7 +158,7 @@
+          LOGGER.warn("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
+          LOGGER.warn("The server will make no attempt to authenticate usernames. Beware.");
+          LOGGER.warn("While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.");
+-         LOGGER.warn("To change this, set \"online-mode\" to \"true\" in the config/server.cfg file.");
++         LOGGER.warn("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
+       }
+ 
+       if (this.convertOldUsers()) {
 @@ -172,11 +174,14 @@
           SkullBlockEntity.setSessionService(this.getSessionService());
           SkullBlockEntity.setMainThreadExecutor(this);

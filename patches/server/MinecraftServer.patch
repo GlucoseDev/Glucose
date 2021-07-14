@@ -19,6 +19,15 @@
  import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
  import net.minecraft.world.level.storage.CommandStorage;
  import net.minecraft.world.level.storage.DerivedLevelData;
+@@ -175,7 +180,7 @@
+    private static final long STATUS_EXPIRE_TIME_NS = 5000000000L;
+    private static final int MAX_STATUS_PLAYER_SAMPLE = 12;
+    public static final String MAP_RESOURCE_FILE = "resources.zip";
+-   public static final File USERID_CACHE_FILE = new File("usercache.json");
++   public static final File USERID_CACHE_FILE = new File("config/usercache.json"); // Glucose :: config dir
+    public static final int START_CHUNK_RADIUS = 11;
+    private static final int START_TICKING_CHUNK_COUNT = 441;
+    private static final int AUTOSAVE_INTERVAL = 6000;
 @@ -252,18 +257,20 @@
     private final StructureManager structureManager;
     protected final WorldData worldData;

@@ -14,6 +14,7 @@ plugins {
 }
 apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'idea'
 repositories {
     mavenLocal()
     maven {
@@ -45,7 +46,7 @@ dependencies {
 }
 
 group = 'ml.glucosedev'
-version = '1.17.1-005'
+version = '1.17.1-006'
 description = 'Glucose'
 sourceCompatibility = JavaVersion.VERSION_16
 targetCompatibility = JavaVersion.VERSION_16

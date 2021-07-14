@@ -10,10 +10,10 @@ public class GlucoseConfig {
     static Logger j = LogManager.getLogger();
     public Properties glucoseProp;
     public GlucoseConfig() throws  IOException {
-        File propFile = new File("glucose.properties");
+        File propFile = new File("config/glucose.cfg");
         if (!propFile.exists()) {
             j.info("Creating Glucose Properties file...");
-            try (OutputStream output = new FileOutputStream("./glucose.properties")) {
+            try (OutputStream output = new FileOutputStream("./config/glucose.cfg")) {
                 glucoseProp = new Properties();
 
                 glucoseProp.setProperty("joinMessage", "%player% &ejoined the game");

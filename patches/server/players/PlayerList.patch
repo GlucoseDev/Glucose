@@ -1,0 +1,26 @@
+--- a/net/minecraft/server/players/PlayerList.java
++++ b/net/minecraft/server/players/PlayerList.java
+@@ -95,10 +95,10 @@
+ import org.apache.logging.log4j.Logger;
+ 
+ public abstract class PlayerList {
+-   public static final File USERBANLIST_FILE = new File("banned-players.json");
+-   public static final File IPBANLIST_FILE = new File("banned-ips.json");
+-   public static final File OPLIST_FILE = new File("ops.json");
+-   public static final File WHITELIST_FILE = new File("whitelist.json");
++   public static final File USERBANLIST_FILE = new File("config/banned-players.json"); // Glucose :: config dir
++   public static final File IPBANLIST_FILE = new File("config/banned-ips.json"); // Glucose :: config dir
++   public static final File OPLIST_FILE = new File("config/ops.json"); // Glucose :: config dir
++   public static final File WHITELIST_FILE = new File("config/whitelist.json"); // Glucose :: config dir
+    private static final Logger LOGGER = LogManager.getLogger();
+    private static final int SEND_PLAYER_INFO_INTERVAL = 600;
+    private static final SimpleDateFormat BAN_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+@@ -137,7 +137,7 @@
+       GameProfile var3 = var2.getGameProfile();
+       GameProfileCache var4 = this.server.getProfileCache();
+       Optional var5 = var4.get(var3.getId());
+-      String var6 = (String)var5.map(GameProfile::getName).orElse(var3.getName());
++      String var6 = (String)var3.getName(); // Glucose :: decompile error
+       var4.add(var3);
+       CompoundTag var7 = this.load(var2);
+       ResourceKey var23;
