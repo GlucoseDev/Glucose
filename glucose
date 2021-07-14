@@ -12,9 +12,6 @@ decompile(){
 patch(){
 	sh ./tools/scripts/applyPatches.sh
 }
-jar(){
-	sh ./tools/scripts/build.sh
-}
 help(){
 	echo "Glucose Script Help"
 	echo ""
@@ -23,20 +20,18 @@ help(){
 	echo "- b, build		| Build (run everything below)"
 	echo "- decompile, decom  	| Only decompile"
 	echo "- p, patch		| Apply patches"
-	echo "- j, jar                | Build the jar"
 	echo "- rbp, rebuildpatches   | Create Patches"
 	echo "Selected version: $mcVersion"
 }
 build(){
 	decompile
 	patch
-	jar
+	gradle build
 }
 case "$1" in
 	"b" | "build") build;;
 	"d" | "decompile" | "decom") ./Sticky/sticky.sh $mcVersion;;
 	"p" | "patch") patch;;
-	"j" | "jar") jar;;
   "rbp" | "rebuildpatches") rebuildpatches;;
 	*) help;;
 esac
