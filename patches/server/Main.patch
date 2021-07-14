@@ -33,6 +33,15 @@
           if (var16.has(var9)) {
              var1.printHelpOn(System.err);
              return;
+@@ -96,7 +94,7 @@
+          Bootstrap.validate();
+          Util.startTimerHackThread();
+          RegistryAccess.RegistryHolder var17 = RegistryAccess.builtin();
+-         Path var18 = Paths.get("server.properties");
++         Path var18 = Paths.get("config/server.cfg"); // Glucose
+          DedicatedServerSettings var19 = new DedicatedServerSettings(var18);
+          var19.forceSave();
+          Path var20 = Paths.get("eula.txt");
 @@ -107,7 +105,7 @@
           }
  
