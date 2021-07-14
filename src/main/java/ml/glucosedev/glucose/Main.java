@@ -41,6 +41,11 @@ public class Main {
             }
 
             File defaultProperties = new File("server.properties");
+            File bannedIps = new File("banned-ips.json");
+            File bannedPlayers = new File("banned-players.json");
+            File ops = new File("ops.json");
+            File whitelist = new File("whitelist.json");
+
             if (defaultProperties.exists()) {
                 j.warn("Moving server.properties to config/server.cfg");
                 j.warn("If you ever want to change from Glucose, please move this file to ./server.properties manually.");
@@ -50,6 +55,10 @@ public class Main {
                     j.info("Using default configuration file");
                 }
             }
+            if (bannedIps.exists()) { bannedIps.renameTo(new File("config/banned-ips.json")); }
+            if (bannedPlayers.exists()) { bannedPlayers.renameTo(new File("config/banned-players.json")); }
+            if (ops.exists()) { ops.renameTo(new File("config/ops.json")); }
+            if (whitelist.exists()) { whitelist.renameTo(new File("config/whitelist.json")); }
             net.minecraft.server.Main.main(args); // Start native Minecraft server
     }
 }
