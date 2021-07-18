@@ -1,4 +1,4 @@
-![logo](https://glucosedev.ml/resources/glucose-banner-fixed_morecenter-removebg-preview.png)
+![logo](https://glucosedev.ml/resources/glucose2.svg)
 --
 [![CI Status](https://github.com/GlucoseDev/Glucose/workflows/Java%20CI%20With%20Gradle/badge.svg)](https://github.com/GlucoseDev/Glucose/actions)
 [![GitHub contributors](https://img.shields.io/github/contributors/GlucoseDev/Glucose.svg)](https://GitHub.com/GlucoseDev/Glucose/graphs/contributors/)
