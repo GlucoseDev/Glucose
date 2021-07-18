@@ -7,7 +7,6 @@ rebuildpatches(){
   sh ./tools/scripts/rebuildPatches.sh
 }
 decompile(){
-  chmod +x ./Sticky/sticky.sh
 	sh ./tools/scripts/remap_decompile.sh
 }
 patch(){
@@ -31,7 +30,7 @@ build(){
 }
 case "$1" in
 	"b" | "build") build;;
-	"d" | "decompile" | "decom") ./Sticky/sticky.sh $mcVersion;;
+	"d" | "decompile" | "decom") chmod +x ./Sticky/sticky.sh; ./Sticky/sticky.sh $mcVersion;;
 	"p" | "patch") patch;;
   "rbp" | "rebuildpatches") rebuildpatches;;
 	*) help;;
