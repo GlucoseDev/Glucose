@@ -25,7 +25,7 @@ If you are modifying code by glucose (in the `src/glucose` package) then you wil
 ### Modifying Minecraft code
 As stated above, Minecraft is closed-source, so we cannot put source code in this repository. To contribute, you will need to use patches
 #### Working with patches
-What you will need to do is clone this repository, and run `./glucose d`, then copy everything in `.cache/<version>/decompiled/net` into `src/main/java/net`. Then run `./glucose p`
+What you will need to do is clone this repository, and run `./glucose d`, followed by `./glucose p`. You should then hava Minecraft sources in your IDE, if you would like to modify a file which hasn't yet been patched, copy it from the cache.
 
 * Modify the code how you desire
 ##### Creating your first patch
