@@ -1,6 +1,7 @@
 package ml.glucosedev.glucose;
 
 import ml.glucosedev.glucose.plugin.GlucosePluginLoader;
+import ml.glucosedev.glucoselib.event.PlayerJoinEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,5 +26,9 @@ public class GlucoseEventHandler {
 
     public static void fireEvent() {
 
+    }
+    public void playerJoin(PlayerJoinEvent event) {
+        // TODO custom join messages
+        // TODO MOTD
     }
 }

@@ -47,7 +47,7 @@ dependencies {
 }
 
 group = 'ml.glucosedev'
-version = '1.17.1-008'
+version = '1.17.1-009'
 description = 'Glucose'
 sourceCompatibility = JavaVersion.VERSION_16
 targetCompatibility = JavaVersion.VERSION_16
@@ -76,6 +76,9 @@ jar {
 //    }
 task setup(type: Exec) {
     group 'glucose'
+    commandLine 'git submodule update --init --recursive'
+    commandLine './gradlew build -p GlucoseLib'
+    commandLine 'cp GlucoseLib/build/libs/GlucoseLib-*.jar ./libs/'
     dependsOn ':decompile'
     dependsOn ':patch'
 }
