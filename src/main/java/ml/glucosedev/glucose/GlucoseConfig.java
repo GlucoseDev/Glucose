@@ -8,7 +8,7 @@ import java.util.Properties;
 
 public class GlucoseConfig {
     static Logger j = LogManager.getLogger();
-    public Properties glucoseProp;
+    public static Properties glucoseProp;
     public GlucoseConfig() throws  IOException {
         File propFile = new File("config/glucose.cfg");
         if (!propFile.exists()) {
@@ -16,12 +16,13 @@ public class GlucoseConfig {
             try (OutputStream output = new FileOutputStream("./config/glucose.cfg")) {
                 glucoseProp = new Properties();
 
-                glucoseProp.setProperty("joinMessage", "%player% &ejoined the game");
-                glucoseProp.setProperty("leaveMessage", "%player% &eleft the game");
-                glucoseProp.setProperty("tnt-explodes", String.valueOf(true));
-                glucoseProp.setProperty("unknown-command", "&cUnknown command... Use /help for help");
+                glucoseProp.setProperty("join-message", "%player% &ejoined the game"); //TODO
+                glucoseProp.setProperty("leave-message", "%player% &eleft the game");//TODO
+                glucoseProp.setProperty("tnt-explodes", String.valueOf(true));//TODO
+                glucoseProp.setProperty("unknown-command", "&cUnknown command... Use /help for help");//TODO
+//                glucoseProp.setProperty("console-prompt", ">"); // TODO
 
-                glucoseProp.store(output, "Will work very soon! :)");
+                glucoseProp.store(output, "Glucose config file");
                 j.info("Created properties file");
             } catch(IOException e) {
                 e.printStackTrace();

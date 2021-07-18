@@ -19,7 +19,7 @@ import java.nio.file.Paths;
 
 public class Main {
     static Logger j = LogManager.getLogger("Glucose");
-    public static void main(@NotNull final String[] args) {
+    public static void main(@NotNull final String[] args) throws IOException {
         j.info("------------------------------");
         j.info("Glucose");
         j.info("https://github.com/GlucoseDev/Glucose");
@@ -32,6 +32,7 @@ public class Main {
                 j.info("Creating config directory");
                 config.mkdirs();
             }
+            new GlucoseEventHandler().serverInitializeEvent(); // Glucose
             j.info("Starting Minecraft Server..."); //sdfoisdujfosdjfsdofsd
             if (!(ManagementFactory.getRuntimeMXBean().getVmVersion().startsWith("16"))) {
 //                j.info("Java version: "+ManagementFactory.getRuntimeMXBean().getVmVersion());

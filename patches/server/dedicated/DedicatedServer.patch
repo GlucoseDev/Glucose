@@ -1,15 +1,62 @@
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -22,6 +22,8 @@
+@@ -22,6 +22,11 @@
  import java.util.function.BooleanSupplier;
  import java.util.regex.Pattern;
  import javax.annotation.Nullable;
 +
++import jline.UnsupportedTerminal;
++import jline.console.ConsoleReader;
++import ml.glucosedev.glucose.Glucose;
 +import ml.glucosedev.glucose.GlucoseEventHandler;
  import net.minecraft.DefaultUncaughtExceptionHandler;
  import net.minecraft.DefaultUncaughtExceptionHandlerWithName;
  import net.minecraft.SharedConstants;
-@@ -146,9 +148,9 @@
+@@ -80,8 +85,17 @@
+    private final TextFilterClient textFilterClient;
+    @Nullable
+    private final Component resourcePackPrompt;
++   private ConsoleReader reader;
++   private String CONSOLE_PROMPT = Glucose.getConsolePrompt();
++
++   // Glucose start
++   {
++      reader = new ConsoleReader();
++      reader.setPrompt(CONSOLE_PROMPT);
++   }
++   // Glucose end
+ 
+-   public DedicatedServer(Thread var1, RegistryAccess.RegistryHolder var2, LevelStorageSource.LevelStorageAccess var3, PackRepository var4, ServerResources var5, WorldData var6, DedicatedServerSettings var7, DataFixer var8, MinecraftSessionService var9, GameProfileRepository var10, GameProfileCache var11, ChunkProgressListenerFactory var12) {
++   public DedicatedServer(Thread var1, RegistryAccess.RegistryHolder var2, LevelStorageSource.LevelStorageAccess var3, PackRepository var4, ServerResources var5, WorldData var6, DedicatedServerSettings var7, DataFixer var8, MinecraftSessionService var9, GameProfileRepository var10, GameProfileCache var11, ChunkProgressListenerFactory var12) throws IOException {
+       super(var1, var2, var3, var6, var4, Proxy.NO_PROXY, var8, var5, var9, var10, var11, var12);
+       this.settings = var7;
+       this.rconConsoleSource = new RconConsoleSource(this);
+@@ -90,24 +104,6 @@
+    }
+ 
+    public boolean initServer() throws IOException {
+-      Thread var1 = new Thread("Server console handler") {
+-         public void run() {
+-            BufferedReader var1 = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
+-
+-            String var2;
+-            try {
+-               while(!DedicatedServer.this.isStopped() && DedicatedServer.this.isRunning() && (var2 = var1.readLine()) != null) {
+-                  DedicatedServer.this.handleConsoleInput(var2, DedicatedServer.this.createCommandSourceStack());
+-               }
+-            } catch (IOException var4) {
+-               DedicatedServer.LOGGER.error("Exception handling console input", var4);
+-            }
+-
+-         }
+-      };
+-      var1.setDaemon(true);
+-      var1.setUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler(LOGGER));
+-      var1.start();
+       LOGGER.info("Starting minecraft server version {}", SharedConstants.getCurrentVersion().getName());
+       if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L) {
+          LOGGER.warn("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
+@@ -146,9 +142,9 @@
        try {
           this.getConnection().startTcpServerListener(var3, this.getPort());
        } catch (IOException var10) {
@@ -22,32 +69,53 @@
           return false;
        }
  
-@@ -156,7 +158,7 @@
-          LOGGER.warn("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
-          LOGGER.warn("The server will make no attempt to authenticate usernames. Beware.");
-          LOGGER.warn("While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.");
--         LOGGER.warn("To change this, set \"online-mode\" to \"true\" in the config/server.cfg file.");
-+         LOGGER.warn("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
-       }
- 
-       if (this.convertOldUsers()) {
-@@ -172,11 +174,14 @@
+@@ -172,11 +168,44 @@
           SkullBlockEntity.setSessionService(this.getSessionService());
           SkullBlockEntity.setMainThreadExecutor(this);
           GameProfileCache.setUsesAuthentication(this.usesAuthentication());
-+         // Glucose start
-+         new GlucoseEventHandler().serverStartEvent();
-+         // Glucose end
++         new GlucoseEventHandler().serverStartEvent(); // Glucose
           LOGGER.info("Preparing level \"{}\"", this.getLevelIdName());
           this.loadLevel();
           long var6 = Util.getNanos() - var4;
           String var8 = String.format(Locale.ROOT, "%.3fs", (double)var6 / 1.0E9D);
 -         LOGGER.info("Done ({})! For help, type \"help\"", var8);
-+         LOGGER.info("Server started in {}! For help, type \"help\"", var8);
++         // Glucose start
++         Thread console = new Thread("Server Console Thread") {
++            public void run() {
++               String cmd;
++               try {
++                  while(!DedicatedServer.this.isStopped() && DedicatedServer.this.isRunning()) {
++                     if (Glucose.useJline()) {
++                        cmd = reader.readLine(CONSOLE_PROMPT, null);
++                     } else {
++                        cmd = reader.readLine();
++                     }
++                     if (cmd == null) {
++                        try {
++                           Thread.sleep(50L);
++                        } catch(InterruptedException e) {
++                           Thread.currentThread().interrupt();
++                        }
++                        continue;
++                     }
++                     if (cmd.trim().length() > 0) {
++                        DedicatedServer.this.handleConsoleInput(cmd.trim(), DedicatedServer.this.createCommandSourceStack());
++                     }
++                  }
++               } catch (IOException ex) {
++                  DedicatedServer.LOGGER.error("Exception handling console input", ex);
++               }
++            }
++         };
++         console.setDaemon(true);
++         console.setUncaughtExceptionHandler(new DefaultUncaughtExceptionHandler(LOGGER));
++         console.start();
++         // Glucose end
++         LOGGER.info("Server started in {}! For help, type \"help\"", var8); // Glucose: changed message
           if (var2.announcePlayerAchievements != null) {
              ((GameRules.BooleanValue)this.getGameRules().getRule(GameRules.RULE_ANNOUNCE_ADVANCEMENTS)).set(var2.announcePlayerAchievements, this);
           }
-@@ -605,7 +610,9 @@
+@@ -605,7 +634,9 @@
     }
  
     // $FF: synthetic method

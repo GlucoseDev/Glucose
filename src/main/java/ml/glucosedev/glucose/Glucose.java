@@ -20,4 +20,12 @@ public class Glucose {
 //    }
     public static String contributors = "Tedster, ServL";
     public static String lead = "SlimeDiamond";
+
+    public static String getConsolePrompt() {
+//        return GlucoseConfig.glucoseProp.getProperty("console-prompt") + " "; // TODO
+        return "> ";
+    }
+    public static boolean useJline() {
+        return true;
+    }
 }

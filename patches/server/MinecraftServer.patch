@@ -168,15 +168,7 @@
           if (var2 != null) {
              try {
                 var2.close();
-@@ -697,6 +706,7 @@
-    protected void runServer() {
-       try {
-          if (this.initServer()) {
-+            new GlucoseEventHandler().serverInitializeEvent(); // Glucose
-             this.nextTickTime = Util.getMillis();
-             this.status.setDescription(new TextComponent(this.motd));
-             this.status.setVersion(new ServerStatus.Version(SharedConstants.getCurrentVersion().getName(), SharedConstants.getCurrentVersion().getProtocolVersion()));
-@@ -796,10 +806,10 @@
+@@ -796,10 +805,10 @@
           return true;
        } else {
           if (this.haveTime()) {
@@ -189,7 +181,7 @@
                 if (var2.getChunkSource().pollTask()) {
                    return true;
                 }
-@@ -810,7 +820,7 @@
+@@ -810,7 +819,7 @@
        }
     }
  
@@ -198,7 +190,7 @@
        this.getProfiler().incrementCounter("runTask");
        super.doRunTask(var1);
     }
-@@ -823,11 +833,11 @@
+@@ -823,11 +832,11 @@
  
        var2.ifPresent((var1x) -> {
           try {
@@ -214,7 +206,7 @@
              byte[] var4 = Base64.getEncoder().encode(var3.toByteArray());
              String var10001 = new String(var4, StandardCharsets.UTF_8);
              var1.setFavicon("data:image/png;base64," + var10001);
-@@ -901,10 +911,10 @@
+@@ -901,10 +910,10 @@
        this.profiler.push("commandFunctions");
        this.getFunctions().tick();
        this.profiler.popPush("levels");
@@ -227,7 +219,7 @@
           this.profiler.push(() -> {
              return var3 + " " + var3.dimension().location();
           });
-@@ -1000,7 +1010,7 @@
+@@ -1000,7 +1009,7 @@
  
     @DontObfuscate
     public String getServerModName() {
@@ -236,7 +228,7 @@
     }
  
     public SystemReport fillSystemReport(SystemReport var1) {
-@@ -1012,22 +1022,22 @@
+@@ -1012,22 +1021,22 @@
        }
  
        var1.setDetail("Data Packs", () -> {
@@ -265,7 +257,7 @@
        });
        if (this.serverId != null) {
           var1.setDetail("Server Id", () -> {
-@@ -1093,10 +1103,10 @@
+@@ -1093,10 +1102,10 @@
     }
  
     private void updateMobSpawningFlags() {
@@ -278,7 +270,7 @@
           var2.setSpawnSettings(this.isSpawningMonsters(), this.isSpawningAnimals());
        }
  
-@@ -1151,10 +1161,10 @@
+@@ -1151,10 +1160,10 @@
        var1.setDynamicData("run_time", (Util.getMillis() - var1.getStartupTime()) / 60L * 1000L);
        var1.setDynamicData("avg_tick_ms", (int)(Mth.average(this.tickTimes) * 1.0E-6D));
        int var2 = 0;
@@ -291,7 +283,7 @@
           if (var4 != null) {
              var1.setDynamicData("world[" + var2 + "][dimension]", var4.dimension().location());
              var1.setDynamicData("world[" + var2 + "][mode]", this.worldData.getGameType());
-@@ -1360,8 +1370,8 @@
+@@ -1360,8 +1369,8 @@
     }
  
     public CompletableFuture<Void> reloadResources(Collection<String> var1) {
@@ -302,7 +294,7 @@
           PackRepository var10001 = this.packRepository;
           Objects.requireNonNull(var10001);
           return (ImmutableList)var10000.map(var10001::getPack).filter(Objects::nonNull).map(Pack::open).collect(ImmutableList.toImmutableList());
-@@ -1369,10 +1379,10 @@
+@@ -1369,10 +1378,10 @@
           return ServerResources.loadResources(var1x, this.registryHolder, this.isDedicatedServer() ? Commands.CommandSelection.DEDICATED : Commands.CommandSelection.INTEGRATED, this.getFunctionCompilationLevel(), this.executor, this);
        }).thenAcceptAsync((var2x) -> {
           this.resources.close();
@@ -315,7 +307,7 @@
           this.getPlayerList().saveAll();
           this.getPlayerList().reloadResources();
           this.functionManager.replaceLibrary(this.resources.getFunctionLibrary());
-@@ -1426,8 +1436,8 @@
+@@ -1426,8 +1435,8 @@
     }
  
     private static DataPackConfig getSelectedPacks(PackRepository var0) {
@@ -326,7 +318,7 @@
        List var3 = (List)var0.getAvailableIds().stream().filter((var1x) -> {
           return !var1.contains(var1x);
        }).collect(ImmutableList.toImmutableList());
-@@ -1813,6 +1823,7 @@
+@@ -1813,6 +1822,7 @@
     }
  
     // $FF: synthetic method
@@ -334,7 +326,7 @@
     public void doRunTask(Runnable var1) {
        this.doRunTask((TickTask)var1);
     }
-@@ -1826,6 +1837,7 @@
+@@ -1826,6 +1836,7 @@
     public Runnable wrapRunnable(Runnable var1) {
        return this.wrapRunnable(var1);
     }
