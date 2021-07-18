@@ -1,6 +1,16 @@
 --- a/net/minecraft/server/players/PlayerList.java
 +++ b/net/minecraft/server/players/PlayerList.java
-@@ -95,10 +95,10 @@
+@@ -22,6 +22,9 @@
+ import java.util.UUID;
+ import java.util.function.Function;
+ import javax.annotation.Nullable;
++
++import ml.glucosedev.glucose.GlucoseEventHandler;
++import ml.glucosedev.glucoselib.event.PlayerJoinEvent;
+ import net.minecraft.ChatFormatting;
+ import net.minecraft.FileUtil;
+ import net.minecraft.Util;
+@@ -95,10 +98,10 @@
  import org.apache.logging.log4j.Logger;
  
  public abstract class PlayerList {
@@ -15,7 +25,7 @@
     private static final Logger LOGGER = LogManager.getLogger();
     private static final int SEND_PLAYER_INFO_INTERVAL = 600;
     private static final SimpleDateFormat BAN_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-@@ -137,7 +137,7 @@
+@@ -137,7 +140,7 @@
        GameProfile var3 = var2.getGameProfile();
        GameProfileCache var4 = this.server.getProfileCache();
        Optional var5 = var4.get(var3.getId());
@@ -24,3 +34,16 @@
        var4.add(var3);
        CompoundTag var7 = this.load(var2);
        ResourceKey var23;
+@@ -193,6 +196,12 @@
+       }
+ 
+       this.broadcastMessage(var17.withStyle(ChatFormatting.YELLOW), ChatType.SYSTEM, Util.NIL_UUID);
++      new PlayerJoinEvent() {
++         @Override
++         public ml.glucosedev.glucoselib.entity.Player getPlayer() {
++            return (ml.glucosedev.glucoselib.entity.Player) var2;
++         }
++      };
+       var13.teleport(var2.getX(), var2.getY(), var2.getZ(), var2.getYRot(), var2.getXRot());
+       this.players.add(var2);
+       this.playersByUUID.put(var2.getUUID(), var2);
