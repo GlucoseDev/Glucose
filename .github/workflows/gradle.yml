@@ -14,7 +14,7 @@ jobs:
       with:
         java-version: '16'
         distribution: 'adopt'
-    - name: Setup
-      run: ./gradlew :setup
+    - name: setup
+      run: git submodule update --init --recursive; ./gradlew :setup
     - name: build
       run: ./gradlew build

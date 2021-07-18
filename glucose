@@ -1,5 +1,5 @@
 #!/bin/bash
-mcVersion=$(cat .version) || echo "1.16.5" > .version || exit 1
+mcVersion=$(cat .version) || echo "1.17.1" > .version || exit 1
 for file in ./tools/scripts/*; do
   chmod +x "$file"
 done
@@ -7,6 +7,7 @@ rebuildpatches(){
   sh ./tools/scripts/rebuildPatches.sh
 }
 decompile(){
+  chmod +x ./Sticky/sticky.sh
 	sh ./tools/scripts/remap_decompile.sh
 }
 patch(){
