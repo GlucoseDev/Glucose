@@ -4,6 +4,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.*;
 import java.util.Arrays;
 import java.util.Properties;
@@ -11,7 +15,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class GlucosePluginLoader {
-    static Logger j = LogManager.getLogger();
+    static Logger j = LogManager.getLogger("Glucose/PluginLoader");
     public GlucosePluginLoader() throws IOException {
         j.info("Loading plugins...");
         File pluginDir = new File("./plugins/");
@@ -61,12 +65,19 @@ public class GlucosePluginLoader {
                         Properties infProp = new Properties();
                         infProp.load(new StringReader(infData));
                         //j.info("Debug: {}", infData);
-                        j.info("Main class: {}", infProp.getProperty("main-class"));
-                        j.info("Plugin name: {}", infProp.getProperty("name"));
-                        j.info("Plugin ID: {}", infProp.getProperty("id"));
-                    } catch(NumberFormatException e) {
-                        j.error(e);
-                        j.error("Could not load plugin {}", file.getName());
+//                        j.info("Main class: {}", infProp.getProperty("main-class"));
+//                        j.info("Plugin name: {}", infProp.getProperty("name"));
+//                        j.info("Plugin ID: {}", infProp.getProperty("id"));
+
+                        URLClassLoader child = new URLClassLoader(new URL[]{file.toURI().toURL()}, this.getClass().getClassLoader());
+                        Class pluginClass = Class.forName(infProp.getProperty("main-class"), true, child);
+                        Method method = pluginClass.getDeclaredMethod("serverStartEvent");
+                        Object instance = pluginClass.newInstance();
+                        Object result = method.invoke(instance);
+
+                    } catch(NumberFormatException | ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+//                        j.error(e);
+                        j.error("Could not load plugin {}", file.getName(), e);
                         String[] spl = file.getName().split(".jar");
                         File stackLog = new File("./glucose-plugin-crashreports/"+spl[0]+"/error.txt");
                         j.info("Saving stack trace to: {}", stackLog.getPath());
