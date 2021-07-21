@@ -14,7 +14,7 @@ public class GlucosePluginLoader {
     static Logger j = LogManager.getLogger();
     public GlucosePluginLoader() throws IOException {
         j.info("Loading plugins...");
-        File pluginDir = new File("./glucose_plugins/");
+        File pluginDir = new File("./plugins/");
         if (!pluginDir.exists()) {
             j.info("Plugins directory does not exist, creating...");
             pluginDir.mkdirs();
@@ -91,7 +91,7 @@ public class GlucosePluginLoader {
                     outDir.mkdirs();
                     try (FileSystem fileSystem = FileSystems.newFileSystem(zip, null)) {
                         Files.copy(infPath, out);
-                    }
+                    }gl
                     */
                 }
             }
