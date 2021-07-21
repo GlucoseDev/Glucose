@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 
 public class GlucoseEventHandler {
-    static Logger j = LogManager.getLogger();
+    static Logger j = LogManager.getLogger("Glucose");
     private EventManager EventManager;
 
     public void serverStartEvent() throws IOException {

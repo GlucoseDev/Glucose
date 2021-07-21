@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 
 public class Glucose {
-    static Logger j = LogManager.getLogger();
+    static Logger j = LogManager.getLogger("Glucose");
     public static String getImplName(){
     return "Glucose";
     }

@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.Properties;
 
 public class GlucoseConfig {
-    static Logger j = LogManager.getLogger();
+    static Logger j = LogManager.getLogger("Glucose");
     public static Properties glucoseProp;
     public GlucoseConfig() throws  IOException {
         File propFile = new File("config/glucose.cfg");
