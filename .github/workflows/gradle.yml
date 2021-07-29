@@ -28,4 +28,4 @@ jobs:
         uses: actions/upload-artifact@v2-preview
         with:
           name: glucose-server
-          path: build/libs/Glucose*-all.jar
+          path: build/libs/glucose-server*-all.jar
