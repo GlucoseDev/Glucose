@@ -24,3 +24,8 @@ jobs:
         run: ./glucose p
       - name: Build
         run: gradle build
+      - name: Upload Jar
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: glucose-server
+          path: build/libs/Glucose*-all.jar
