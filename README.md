@@ -34,6 +34,7 @@ You can just run `./glucose rbp` to make patches.
 ```bash
 git clone git@github.com:GlucoseDev/Glucose.git
 cd Glucose
+git submodule update --init --recursive
 ./glucose decompile
 ./glucose patch
 gradle build
