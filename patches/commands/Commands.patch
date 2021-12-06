@@ -1,5 +1,5 @@
---- a/net/minecraft/commands/Commands.java
-+++ b/net/minecraft/commands/Commands.java
+--- .cache/1.17.1/decompiled/net/minecraft/commands/Commands.java	2021-12-06 18:36:57.849272200 +1300
++++ src/main/java/net/minecraft/commands/Commands.java	2021-12-06 18:36:57.875798500 +1300
 @@ -11,26 +11,25 @@
  import com.mojang.brigadier.exceptions.CommandSyntaxException;
  import com.mojang.brigadier.tree.CommandNode;
@@ -130,8 +130,8 @@
                 StackTraceElement[] var6 = var15.getStackTrace();
  
                 for(int var7 = 0; var7 < Math.min(var6.length, 3); ++var7) {
--                  var5.append("").append(var6[var7].getMethodName()).append("").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
-+//                  var5.append("").append(var6[var7].getMethodName()).append("").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
+-                  var5.append("\n\n").append(var6[var7].getMethodName()).append("\n ").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
++//                  var5.append("\n\n").append(var6[var7].getMethodName()).append("\n ").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
                 }
              }
  
@@ -165,8 +165,7 @@
 +         return !ArgumentTypes.isTypeRegistered((ArgumentType<?>) var0x);
        }).collect(Collectors.toSet());
        if (!var2.isEmpty()) {
-          LOGGER.warn("Missing type registration for following arguments:
- {}", var2.stream().map((var0x) -> {
+          LOGGER.warn("Missing type registration for following arguments:\n {}", var2.stream().map((var0x) -> {
 @@ -382,8 +426,8 @@
        }
  
