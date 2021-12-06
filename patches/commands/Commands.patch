@@ -130,14 +130,8 @@
                 StackTraceElement[] var6 = var15.getStackTrace();
  
                 for(int var7 = 0; var7 < Math.min(var6.length, 3); ++var7) {
--                  var5.append("
-
-").append(var6[var7].getMethodName()).append("
- ").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
-+//                  var5.append("
-
-").append(var6[var7].getMethodName()).append("
- ").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
+-                  var5.append("").append(var6[var7].getMethodName()).append("").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
++//                  var5.append("").append(var6[var7].getMethodName()).append("").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
                 }
              }
  
