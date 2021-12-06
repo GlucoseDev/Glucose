@@ -36,8 +36,8 @@ public class Main {
             j.info("Starting Minecraft Server..."); //sdfoisdujfosdjfsdofsd
             if (!(ManagementFactory.getRuntimeMXBean().getVmVersion().startsWith("16"))) {
 //                j.info("Java version: "+ManagementFactory.getRuntimeMXBean().getVmVersion());
-                j.error("You are not running on Java 16, as of Minecraft 1.17, Java 16 is required.");
-                j.info("Download Java 16 here: https://www.oracle.com/java/technologies/javase-downloads.html#JDK16");
+                j.fatal("As of Minecraft 1.17.1, Java 16 is required. Please use Java 16.");
+//                j.info("");
                 System.exit(0);
             }
 

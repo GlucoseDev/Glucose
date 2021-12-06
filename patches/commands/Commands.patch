@@ -1,0 +1,186 @@
+--- a/net/minecraft/commands/Commands.java
++++ b/net/minecraft/commands/Commands.java
+@@ -11,26 +11,25 @@
+ import com.mojang.brigadier.exceptions.CommandSyntaxException;
+ import com.mojang.brigadier.tree.CommandNode;
+ import com.mojang.brigadier.tree.RootCommandNode;
+-import java.util.HashMap;
+-import java.util.Iterator;
+-import java.util.Map;
+-import java.util.Set;
++
++import java.util.*;
+ import java.util.function.Predicate;
+ import java.util.stream.Collectors;
+ import javax.annotation.Nullable;
++
++import ml.glucosedev.glucose.Glucose;
++import ml.glucosedev.glucose.util.TextTransformer;
++import ml.glucosedev.glucoselib.command.CommandCaller;
++import ml.glucosedev.glucoselib.command.CommandContext;
++import ml.glucosedev.glucoselib.command.CommandExecutor;
++import ml.glucosedev.glucoselib.command.CommandManager;
+ import net.minecraft.ChatFormatting;
+ import net.minecraft.SharedConstants;
+ import net.minecraft.Util;
+ import net.minecraft.commands.synchronization.ArgumentTypes;
+ import net.minecraft.commands.synchronization.SuggestionProviders;
+ import net.minecraft.gametest.framework.TestCommand;
+-import net.minecraft.network.chat.ClickEvent;
+-import net.minecraft.network.chat.Component;
+-import net.minecraft.network.chat.ComponentUtils;
+-import net.minecraft.network.chat.HoverEvent;
+-import net.minecraft.network.chat.MutableComponent;
+-import net.minecraft.network.chat.TextComponent;
+-import net.minecraft.network.chat.TranslatableComponent;
++import net.minecraft.network.chat.*;
+ import net.minecraft.network.protocol.game.ClientboundCommandsPacket;
+ import net.minecraft.server.commands.AdvancementCommands;
+ import net.minecraft.server.commands.AttributeCommand;
+@@ -105,6 +104,7 @@
+ import net.minecraft.server.level.ServerPlayer;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
++import org.jetbrains.annotations.NotNull;
+ 
+ public class Commands {
+    private static final Logger LOGGER = LogManager.getLogger();
+@@ -114,8 +114,10 @@
+    public static final int LEVEL_ADMINS = 3;
+    public static final int LEVEL_OWNERS = 4;
+    private final CommandDispatcher<CommandSourceStack> dispatcher = new CommandDispatcher();
++   private CommandExecutor CommandExecutor;
++   private String String;
+ 
+-   public Commands(Commands.CommandSelection var1) {
++   public Commands(CommandSelection var1) {
+       AdvancementCommands.register(this.dispatcher);
+       AttributeCommand.register(this.dispatcher);
+       ExecuteCommand.register(this.dispatcher);
+@@ -153,7 +155,7 @@
+       SayCommand.register(this.dispatcher);
+       ScheduleCommand.register(this.dispatcher);
+       ScoreboardCommand.register(this.dispatcher);
+-      SeedCommand.register(this.dispatcher, var1 != Commands.CommandSelection.INTEGRATED);
++      SeedCommand.register(this.dispatcher, var1 != CommandSelection.INTEGRATED);
+       SetBlockCommand.register(this.dispatcher);
+       SetSpawnCommand.register(this.dispatcher);
+       SetWorldSpawnCommand.register(this.dispatcher);
+@@ -206,6 +208,48 @@
+ 
+    public int performCommand(CommandSourceStack var1, String var2) {
+       StringReader var3 = new StringReader(var2);
++      Glucose.j.info("{} sent server command {}", var1.getTextName(), var2); // Glucose :: (it's scuffed, but it works)
++
++      for (Map.Entry<String, CommandExecutor> entry : CommandManager.cmds.entrySet()) {
++//         LOGGER.info(entry.getKey());
++         if (entry.getKey().equals(var2.replace("/", ""))) {
++//            LOGGER.info("(DEBUG) key: {}", entry.getKey());
++            CommandExecutor executor = entry.getValue();
++            executor.execute(new CommandContext() {
++               @Override
++               public @NotNull CommandCaller getCaller() {
++                  return new CommandCaller() {
++                     @Override
++                     public void send(String s) {
++                        var1.source.sendMessage(TextTransformer.toMinecraft(net.kyori.adventure.text.Component.text(s)), Util.NIL_UUID);
++                     }
++
++                     @Override
++                     public void send(String s, Object... objects) {
++
++                     }
++
++                     @Override
++                     public boolean hasPermission(String s) {
++                        return true;
++                     }
++                  };
++               }
++
++               @Override
++               public @NotNull String[] aliases() {
++                  return new String[0];
++               }
++
++               @Override
++               public @org.jetbrains.annotations.Nullable String[] getArgs() {
++                  return new String[0];
++               }
++            });
++            return 0;
++         }
++      }
++
+       if (var3.canRead() && var3.peek() == '/') {
+          var3.skip();
+       }
+@@ -242,21 +286,21 @@
+                var1.sendFailure(var20);
+             }
+          } catch (Exception var15) {
+-            TextComponent var10000 = new TextComponent;
+-            var10000.<init>(var15.getMessage() == null ? var15.getClass().getName() : var15.getMessage());
+-            TextComponent var5 = var10000;
++//            TextComponent var10000 = new TextComponent();
++//            var10000.<init>(var15.getMessage() == null ? var15.getClass().getName() : var15.getMessage());
++//            TextComponent var5 = var10000;
+             if (LOGGER.isDebugEnabled()) {
+                LOGGER.error("Command exception: {}", var2, var15);
+                StackTraceElement[] var6 = var15.getStackTrace();
+ 
+                for(int var7 = 0; var7 < Math.min(var6.length, 3); ++var7) {
+-                  var5.append("
+
+").append(var6[var7].getMethodName()).append("
+ ").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
++//                  var5.append("
+
+").append(var6[var7].getMethodName()).append("
+ ").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
+                }
+             }
+ 
+-            var1.sendFailure((new TranslatableComponent("command.failed")).withStyle((var1x) -> {
+-               return var1x.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, var5));
+-            }));
++//            var1.sendFailure((new TranslatableComponent("command.failed")).withStyle((var1x) -> {
++//               return var1x.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, var5));
++//            }));
+             if (SharedConstants.IS_RUNNING_IN_IDE) {
+                var1.sendFailure(new TextComponent(Util.describeError(var15)));
+                LOGGER.error("'{}' threw an exception", var2, var15);
+@@ -328,7 +372,7 @@
+       return RequiredArgumentBuilder.argument(var0, var1);
+    }
+ 
+-   public static Predicate<String> createValidator(Commands.ParseFunction var0) {
++   public static Predicate<String> createValidator(ParseFunction var0) {
+       return (var1) -> {
+          try {
+             var0.parse(new StringReader(var1));
+@@ -355,10 +399,10 @@
+    }
+ 
+    public static void validate() {
+-      RootCommandNode var0 = (new Commands(Commands.CommandSelection.ALL)).getDispatcher().getRoot();
++      RootCommandNode var0 = (new Commands(CommandSelection.ALL)).getDispatcher().getRoot();
+       Set var1 = ArgumentTypes.findUsedArgumentTypes(var0);
+       Set var2 = (Set)var1.stream().filter((var0x) -> {
+-         return !ArgumentTypes.isTypeRegistered(var0x);
++         return !ArgumentTypes.isTypeRegistered((ArgumentType<?>) var0x);
+       }).collect(Collectors.toSet());
+       if (!var2.isEmpty()) {
+          LOGGER.warn("Missing type registration for following arguments:
+ {}", var2.stream().map((var0x) -> {
+@@ -382,8 +426,8 @@
+       }
+ 
+       // $FF: synthetic method
+-      private static Commands.CommandSelection[] $values() {
+-         return new Commands.CommandSelection[]{ALL, DEDICATED, INTEGRATED};
++      private static CommandSelection[] $values() {
++         return new CommandSelection[]{ALL, DEDICATED, INTEGRATED};
+       }
+    }
+ 

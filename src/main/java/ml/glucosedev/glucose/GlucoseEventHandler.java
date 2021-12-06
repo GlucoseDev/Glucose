@@ -1,7 +1,9 @@
 package ml.glucosedev.glucose;
 
+import ml.glucosedev.glucose.commands.glucose.GlucoseCommand;
+import ml.glucosedev.glucose.commands.glucose.UptimeCommand;
 import ml.glucosedev.glucose.plugin.GlucosePluginLoader;
-import ml.glucosedev.glucoselib.event.Event;
+import ml.glucosedev.glucoselib.command.CommandManager;
 import ml.glucosedev.glucoselib.event.EventManager;
 import ml.glucosedev.glucoselib.event.PlayerJoinEvent;
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +18,8 @@ public class GlucoseEventHandler {
     public void serverStartEvent() throws IOException {
         new GlucosePluginLoader();
 //        getEventHandler().registerEvent();
+        CommandManager.registerCommand(new GlucoseCommand(), "glucose");
+        CommandManager.registerCommand(new UptimeCommand(), "uptime");
     }
     public void serverInitializeEvent() throws IOException {
         j.info("Initializing server...");

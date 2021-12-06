@@ -75,6 +75,8 @@ public class GlucosePluginLoader {
                         Object instance = pluginClass.newInstance();
                         Object result = method.invoke(instance);
 
+                        GlucosePluginManager.pluginNames.add(infProp.getProperty("name"));
+
                     } catch(NumberFormatException | ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
 //                        j.error(e);
                         j.error("Could not load plugin {}", file.getName(), e);

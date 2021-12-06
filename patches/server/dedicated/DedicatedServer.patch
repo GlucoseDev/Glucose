@@ -1,6 +1,6 @@
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -22,6 +22,11 @@
+@@ -22,6 +22,12 @@
  import java.util.function.BooleanSupplier;
  import java.util.regex.Pattern;
  import javax.annotation.Nullable;
@@ -9,10 +9,11 @@
 +import jline.console.ConsoleReader;
 +import ml.glucosedev.glucose.Glucose;
 +import ml.glucosedev.glucose.GlucoseEventHandler;
++import ml.glucosedev.glucose.plugin.GlucosePluginManager;
  import net.minecraft.DefaultUncaughtExceptionHandler;
  import net.minecraft.DefaultUncaughtExceptionHandlerWithName;
  import net.minecraft.SharedConstants;
-@@ -80,8 +85,17 @@
+@@ -80,8 +86,17 @@
     private final TextFilterClient textFilterClient;
     @Nullable
     private final Component resourcePackPrompt;
@@ -31,7 +32,7 @@
        super(var1, var2, var3, var6, var4, Proxy.NO_PROXY, var8, var5, var9, var10, var11, var12);
        this.settings = var7;
        this.rconConsoleSource = new RconConsoleSource(this);
-@@ -90,24 +104,6 @@
+@@ -90,24 +105,6 @@
     }
  
     public boolean initServer() throws IOException {
@@ -56,7 +57,7 @@
        LOGGER.info("Starting minecraft server version {}", SharedConstants.getCurrentVersion().getName());
        if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L) {
           LOGGER.warn("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
-@@ -146,9 +142,9 @@
+@@ -146,9 +143,9 @@
        try {
           this.getConnection().startTcpServerListener(var3, this.getPort());
        } catch (IOException var10) {
@@ -69,7 +70,7 @@
           return false;
        }
  
-@@ -172,11 +168,44 @@
+@@ -172,11 +169,45 @@
           SkullBlockEntity.setSessionService(this.getSessionService());
           SkullBlockEntity.setMainThreadExecutor(this);
           GameProfileCache.setUsesAuthentication(this.usesAuthentication());
@@ -112,10 +113,11 @@
 +         console.start();
 +         // Glucose end
 +         LOGGER.info("Server started in {}! For help, type \"help\"", var8); // Glucose: changed message
++         LOGGER.info("Plugins: {}", GlucosePluginManager.getPluginNames());
           if (var2.announcePlayerAchievements != null) {
              ((GameRules.BooleanValue)this.getGameRules().getRule(GameRules.RULE_ANNOUNCE_ADVANCEMENTS)).set(var2.announcePlayerAchievements, this);
           }
-@@ -605,7 +634,9 @@
+@@ -605,7 +636,9 @@
     }
  
     // $FF: synthetic method

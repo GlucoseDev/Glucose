@@ -23,6 +23,9 @@ repositories {
     flatDir {
         dirs 'libs' // ./libs directory
     }
+    maven {
+        url = "https://repo.zenoc.net/repository"
+    }
 }
 
 dependencies {
@@ -35,7 +38,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.9.0'
     implementation 'org.jetbrains:annotations:16.0.2'
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
-//    implementation 'ml.glucosedev:GlucoseLib:1.0.2-BETA'
+    implementation 'ml.glucosedev:GlucoseLib:1.0.6-BETA'
 //    implementation 'glucose.GlucoseLib:GlucoseLib-1.0.4-BETA-gradle'
     implementation 'net.kyori:adventure-api:4.2.0'
     implementation 'net.kyori:adventure-text-serializer-gson:4.2.0'
@@ -44,6 +47,7 @@ dependencies {
 //    runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.8.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.14.1'
     runtimeOnly 'com.lmax:disruptor:3.4.2'
+//    implementation 'ml.glucosedev:GlucoseLib:1.0.5-BETA'
 }
 
 group = 'ml.glucosedev'
