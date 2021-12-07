@@ -6,20 +6,11 @@
  import javax.imageio.ImageIO;
 +
 +import ml.glucosedev.glucose.Glucose;
-+import ml.glucosedev.glucose.GlucoseEventHandler;
++import ml.glucosedev.glucose.event.GlucoseEventHandler;
  import net.minecraft.CrashReport;
  import net.minecraft.ReportedException;
  import net.minecraft.SharedConstants;
-@@ -143,6 +146,8 @@
- import net.minecraft.world.level.levelgen.PhantomSpawner;
- import net.minecraft.world.level.levelgen.WorldGenSettings;
- import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-+import net.minecraft.world.level.levelgen.feature.Feature;
-+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
- import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
- import net.minecraft.world.level.storage.CommandStorage;
- import net.minecraft.world.level.storage.DerivedLevelData;
-@@ -175,7 +180,7 @@
+@@ -175,7 +178,7 @@
     private static final long STATUS_EXPIRE_TIME_NS = 5000000000L;
     private static final int MAX_STATUS_PLAYER_SAMPLE = 12;
     public static final String MAP_RESOURCE_FILE = "resources.zip";
@@ -28,7 +19,7 @@
     public static final int START_CHUNK_RADIUS = 11;
     private static final int START_TICKING_CHUNK_COUNT = 441;
     private static final int AUTOSAVE_INTERVAL = 6000;
-@@ -252,18 +257,20 @@
+@@ -252,18 +255,20 @@
     private final StructureManager structureManager;
     protected final WorldData worldData;
  
@@ -59,7 +50,7 @@
     }
  
     public MinecraftServer(Thread var1, RegistryAccess.RegistryHolder var2, LevelStorageSource.LevelStorageAccess var3, WorldData var4, PackRepository var5, Proxy var6, DataFixer var7, ServerResources var8, @Nullable MinecraftSessionService var9, @Nullable GameProfileRepository var10, @Nullable GameProfileCache var11, ChunkProgressListenerFactory var12) {
-@@ -313,10 +320,10 @@
+@@ -313,10 +318,10 @@
     private void readScoreboard(DimensionDataStorage var1) {
        ServerScoreboard var10001 = this.getScoreboard();
        Objects.requireNonNull(var10001);
@@ -72,7 +63,7 @@
     }
  
     protected abstract boolean initServer() throws IOException;
-@@ -370,9 +377,9 @@
+@@ -370,9 +375,9 @@
        long var5 = var3.seed();
        long var7 = BiomeManager.obfuscateSeed(var5);
        ImmutableList var9 = ImmutableList.of(new PhantomSpawner(), new PatrolSpawner(), new CatSpawner(), new VillageSiege(), new WanderingTraderSpawner(var2));
@@ -85,7 +76,7 @@
        DimensionType var13;
        if (var12 == null) {
           var13 = (DimensionType)this.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrThrow(DimensionType.OVERWORLD_LOCATION);
-@@ -382,7 +389,7 @@
+@@ -382,7 +387,7 @@
           var11 = var12.generator();
        }
  
@@ -94,7 +85,7 @@
        this.levels.put(Level.OVERWORLD, var14);
        DimensionDataStorage var15 = var14.getDataStorage();
        this.readScoreboard(var15);
-@@ -415,15 +422,15 @@
+@@ -415,15 +420,15 @@
           this.getCustomBossEvents().load(this.worldData.getCustomBossEvents());
        }
  
@@ -116,7 +107,7 @@
              DerivedLevelData var23 = new DerivedLevelData(this.worldData, var2);
              ServerLevel var24 = new ServerLevel(this, this.executor, this.storageSource, var23, var20, var21, var1, var22, var4, var7, ImmutableList.of(), false);
              var16.addListener(new BorderChangeListener.DelegateBorderChangeListener(var24.getWorldBorder()));
-@@ -527,7 +534,7 @@
+@@ -527,7 +532,7 @@
  
        this.nextTickTime = Util.getMillis() + 10L;
        this.waitUntilNextTick();
@@ -125,7 +116,7 @@
  
        while(true) {
           ServerLevel var6;
-@@ -587,8 +594,8 @@
+@@ -587,8 +592,8 @@
     public boolean saveAllChunks(boolean var1, boolean var2, boolean var3) {
        boolean var4 = false;
  
@@ -136,7 +127,7 @@
           if (!var1) {
              LOGGER.info("Saving chunks for level '{}'/{}", var6, var6.dimension().location());
           }
-@@ -625,6 +632,8 @@
+@@ -625,6 +630,8 @@
           this.getConnection().stop();
        }
  
@@ -145,7 +136,7 @@
        if (this.playerList != null) {
           LOGGER.info("Saving players");
           this.playerList.saveAll();
-@@ -632,11 +641,11 @@
+@@ -632,11 +639,11 @@
        }
  
        LOGGER.info("Saving worlds");
@@ -159,7 +150,7 @@
           if (var2 != null) {
              var2.noSave = false;
           }
-@@ -646,7 +655,7 @@
+@@ -646,7 +653,7 @@
        var1 = this.getAllLevels().iterator();
  
        while(var1.hasNext()) {
@@ -168,7 +159,7 @@
           if (var2 != null) {
              try {
                 var2.close();
-@@ -796,10 +805,10 @@
+@@ -796,10 +803,10 @@
           return true;
        } else {
           if (this.haveTime()) {
@@ -181,7 +172,7 @@
                 if (var2.getChunkSource().pollTask()) {
                    return true;
                 }
-@@ -810,7 +819,7 @@
+@@ -810,7 +817,7 @@
        }
     }
  
@@ -190,7 +181,7 @@
        this.getProfiler().incrementCounter("runTask");
        super.doRunTask(var1);
     }
-@@ -823,11 +832,11 @@
+@@ -823,11 +830,11 @@
  
        var2.ifPresent((var1x) -> {
           try {
@@ -206,7 +197,7 @@
              byte[] var4 = Base64.getEncoder().encode(var3.toByteArray());
              String var10001 = new String(var4, StandardCharsets.UTF_8);
              var1.setFavicon("data:image/png;base64," + var10001);
-@@ -901,10 +910,10 @@
+@@ -901,10 +908,10 @@
        this.profiler.push("commandFunctions");
        this.getFunctions().tick();
        this.profiler.popPush("levels");
@@ -219,7 +210,7 @@
           this.profiler.push(() -> {
              return var3 + " " + var3.dimension().location();
           });
-@@ -1000,7 +1009,7 @@
+@@ -1000,7 +1007,7 @@
  
     @DontObfuscate
     public String getServerModName() {
@@ -228,7 +219,7 @@
     }
  
     public SystemReport fillSystemReport(SystemReport var1) {
-@@ -1012,22 +1021,22 @@
+@@ -1012,22 +1019,22 @@
        }
  
        var1.setDetail("Data Packs", () -> {
@@ -257,7 +248,7 @@
        });
        if (this.serverId != null) {
           var1.setDetail("Server Id", () -> {
-@@ -1093,10 +1102,10 @@
+@@ -1093,10 +1100,10 @@
     }
  
     private void updateMobSpawningFlags() {
@@ -270,7 +261,7 @@
           var2.setSpawnSettings(this.isSpawningMonsters(), this.isSpawningAnimals());
        }
  
-@@ -1151,10 +1160,10 @@
+@@ -1151,10 +1158,10 @@
        var1.setDynamicData("run_time", (Util.getMillis() - var1.getStartupTime()) / 60L * 1000L);
        var1.setDynamicData("avg_tick_ms", (int)(Mth.average(this.tickTimes) * 1.0E-6D));
        int var2 = 0;
@@ -283,7 +274,7 @@
           if (var4 != null) {
              var1.setDynamicData("world[" + var2 + "][dimension]", var4.dimension().location());
              var1.setDynamicData("world[" + var2 + "][mode]", this.worldData.getGameType());
-@@ -1360,8 +1369,8 @@
+@@ -1360,8 +1367,8 @@
     }
  
     public CompletableFuture<Void> reloadResources(Collection<String> var1) {
@@ -294,7 +285,7 @@
           PackRepository var10001 = this.packRepository;
           Objects.requireNonNull(var10001);
           return (ImmutableList)var10000.map(var10001::getPack).filter(Objects::nonNull).map(Pack::open).collect(ImmutableList.toImmutableList());
-@@ -1369,10 +1378,10 @@
+@@ -1369,10 +1376,10 @@
           return ServerResources.loadResources(var1x, this.registryHolder, this.isDedicatedServer() ? Commands.CommandSelection.DEDICATED : Commands.CommandSelection.INTEGRATED, this.getFunctionCompilationLevel(), this.executor, this);
        }).thenAcceptAsync((var2x) -> {
           this.resources.close();
@@ -307,7 +298,7 @@
           this.getPlayerList().saveAll();
           this.getPlayerList().reloadResources();
           this.functionManager.replaceLibrary(this.resources.getFunctionLibrary());
-@@ -1426,8 +1435,8 @@
+@@ -1426,8 +1433,8 @@
     }
  
     private static DataPackConfig getSelectedPacks(PackRepository var0) {
@@ -318,7 +309,7 @@
        List var3 = (List)var0.getAvailableIds().stream().filter((var1x) -> {
           return !var1.contains(var1x);
        }).collect(ImmutableList.toImmutableList());
-@@ -1813,6 +1822,7 @@
+@@ -1813,6 +1820,7 @@
     }
  
     // $FF: synthetic method
@@ -326,7 +317,7 @@
     public void doRunTask(Runnable var1) {
        this.doRunTask((TickTask)var1);
     }
-@@ -1826,6 +1836,7 @@
+@@ -1826,6 +1834,7 @@
     public Runnable wrapRunnable(Runnable var1) {
        return this.wrapRunnable(var1);
     }

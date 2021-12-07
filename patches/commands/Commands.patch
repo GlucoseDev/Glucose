@@ -42,7 +42,7 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
 +import org.jetbrains.annotations.NotNull;
- 
+
  public class Commands {
     private static final Logger LOGGER = LogManager.getLogger();
 @@ -114,8 +114,10 @@
@@ -51,7 +51,7 @@
     private final CommandDispatcher<CommandSourceStack> dispatcher = new CommandDispatcher();
 +   private CommandExecutor CommandExecutor;
 +   private String String;
- 
+
 -   public Commands(Commands.CommandSelection var1) {
 +   public Commands(CommandSelection var1) {
        AdvancementCommands.register(this.dispatcher);
@@ -67,7 +67,7 @@
        SetSpawnCommand.register(this.dispatcher);
        SetWorldSpawnCommand.register(this.dispatcher);
 @@ -206,6 +208,48 @@
- 
+
     public int performCommand(CommandSourceStack var1, String var2) {
        StringReader var3 = new StringReader(var2);
 +      Glucose.j.info("{} sent server command {}", var1.getTextName(), var2); // Glucose :: (it's scuffed, but it works)
@@ -128,13 +128,13 @@
              if (LOGGER.isDebugEnabled()) {
                 LOGGER.error("Command exception: {}", var2, var15);
                 StackTraceElement[] var6 = var15.getStackTrace();
- 
+
                 for(int var7 = 0; var7 < Math.min(var6.length, 3); ++var7) {
 -                  var5.append("\n\n").append(var6[var7].getMethodName()).append("\n ").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
 +//                  var5.append("\n\n").append(var6[var7].getMethodName()).append("\n ").append(var6[var7].getFileName()).append(":").append(String.valueOf(var6[var7].getLineNumber()));
                 }
              }
- 
+
 -            var1.sendFailure((new TranslatableComponent("command.failed")).withStyle((var1x) -> {
 -               return var1x.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, var5));
 -            }));
@@ -147,7 +147,7 @@
 @@ -328,7 +372,7 @@
        return RequiredArgumentBuilder.argument(var0, var1);
     }
- 
+
 -   public static Predicate<String> createValidator(Commands.ParseFunction var0) {
 +   public static Predicate<String> createValidator(ParseFunction var0) {
        return (var1) -> {
@@ -155,7 +155,7 @@
              var0.parse(new StringReader(var1));
 @@ -355,10 +399,10 @@
     }
- 
+
     public static void validate() {
 -      RootCommandNode var0 = (new Commands(Commands.CommandSelection.ALL)).getDispatcher().getRoot();
 +      RootCommandNode var0 = (new Commands(CommandSelection.ALL)).getDispatcher().getRoot();
@@ -168,7 +168,7 @@
           LOGGER.warn("Missing type registration for following arguments:\n {}", var2.stream().map((var0x) -> {
 @@ -382,8 +426,8 @@
        }
- 
+
        // $FF: synthetic method
 -      private static Commands.CommandSelection[] $values() {
 -         return new Commands.CommandSelection[]{ALL, DEDICATED, INTEGRATED};
@@ -176,4 +176,3 @@
 +         return new CommandSelection[]{ALL, DEDICATED, INTEGRATED};
        }
     }
- 

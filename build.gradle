@@ -38,7 +38,7 @@ dependencies {
     implementation 'commons-io:commons-io:2.9.0'
     implementation 'org.jetbrains:annotations:16.0.2'
     implementation 'net.sf.jopt-simple:jopt-simple:5.0.4'
-    implementation 'ml.glucosedev:GlucoseLib:1.0.6-BETA'
+    implementation 'ml.glucosedev:GlucoseLib:1.0.7-BETA'
 //    implementation 'glucose.GlucoseLib:GlucoseLib-1.0.4-BETA-gradle'
     implementation 'net.kyori:adventure-api:4.2.0'
     implementation 'net.kyori:adventure-text-serializer-gson:4.2.0'

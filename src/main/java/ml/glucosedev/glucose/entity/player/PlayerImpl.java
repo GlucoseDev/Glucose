@@ -1,7 +1,7 @@
-package ml.glucosedev.glucose.entity;
+package ml.glucosedev.glucose.entity.player;
 
 import ml.glucosedev.glucose.util.TextTransformer;
-import ml.glucosedev.glucoselib.entity.Player;
+import ml.glucosedev.glucoselib.entity.player.Player;
 import net.kyori.adventure.text.Component;
 import net.minecraft.Util;
 import net.minecraft.server.level.ServerPlayer;

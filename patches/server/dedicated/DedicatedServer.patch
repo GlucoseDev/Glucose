@@ -1,19 +1,41 @@
 --- a/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -22,6 +22,12 @@
+@@ -6,13 +6,11 @@
+ import com.mojang.authlib.GameProfileRepository;
+ import com.mojang.authlib.minecraft.MinecraftSessionService;
+ import com.mojang.datafixers.DataFixer;
+-import java.io.BufferedReader;
++
+ import java.io.BufferedWriter;
+ import java.io.IOException;
+-import java.io.InputStreamReader;
+ import java.net.InetAddress;
+ import java.net.Proxy;
+-import java.nio.charset.StandardCharsets;
+ import java.nio.file.Files;
+ import java.nio.file.Path;
+ import java.util.Collections;
+@@ -22,6 +20,11 @@
  import java.util.function.BooleanSupplier;
  import java.util.regex.Pattern;
  import javax.annotation.Nullable;
 +
-+import jline.UnsupportedTerminal;
 +import jline.console.ConsoleReader;
 +import ml.glucosedev.glucose.Glucose;
-+import ml.glucosedev.glucose.GlucoseEventHandler;
++import ml.glucosedev.glucose.event.GlucoseEventHandler;
 +import ml.glucosedev.glucose.plugin.GlucosePluginManager;
  import net.minecraft.DefaultUncaughtExceptionHandler;
  import net.minecraft.DefaultUncaughtExceptionHandlerWithName;
  import net.minecraft.SharedConstants;
-@@ -80,8 +86,17 @@
+@@ -45,7 +48,6 @@
+ import net.minecraft.server.packs.repository.PackRepository;
+ import net.minecraft.server.players.GameProfileCache;
+ import net.minecraft.server.players.OldUsersConverter;
+-import net.minecraft.server.players.PlayerList;
+ import net.minecraft.server.rcon.RconConsoleSource;
+ import net.minecraft.server.rcon.thread.QueryThreadGs4;
+ import net.minecraft.server.rcon.thread.RconThread;
+@@ -80,8 +82,17 @@
     private final TextFilterClient textFilterClient;
     @Nullable
     private final Component resourcePackPrompt;
@@ -32,7 +54,7 @@
        super(var1, var2, var3, var6, var4, Proxy.NO_PROXY, var8, var5, var9, var10, var11, var12);
        this.settings = var7;
        this.rconConsoleSource = new RconConsoleSource(this);
-@@ -90,24 +105,6 @@
+@@ -90,24 +101,6 @@
     }
  
     public boolean initServer() throws IOException {
@@ -57,7 +79,7 @@
        LOGGER.info("Starting minecraft server version {}", SharedConstants.getCurrentVersion().getName());
        if (Runtime.getRuntime().maxMemory() / 1024L / 1024L < 512L) {
           LOGGER.warn("To start the server with more ram, launch it as \"java -Xmx1024M -Xms1024M -jar minecraft_server.jar\"");
-@@ -146,9 +143,9 @@
+@@ -146,9 +139,9 @@
        try {
           this.getConnection().startTcpServerListener(var3, this.getPort());
        } catch (IOException var10) {
@@ -70,7 +92,7 @@
           return false;
        }
  
-@@ -172,11 +169,45 @@
+@@ -172,11 +165,45 @@
           SkullBlockEntity.setSessionService(this.getSessionService());
           SkullBlockEntity.setMainThreadExecutor(this);
           GameProfileCache.setUsesAuthentication(this.usesAuthentication());
@@ -117,7 +139,7 @@
           if (var2.announcePlayerAchievements != null) {
              ((GameRules.BooleanValue)this.getGameRules().getRule(GameRules.RULE_ANNOUNCE_ADVANCEMENTS)).set(var2.announcePlayerAchievements, this);
           }
-@@ -605,7 +636,9 @@
+@@ -605,7 +632,9 @@
     }
  
     // $FF: synthetic method

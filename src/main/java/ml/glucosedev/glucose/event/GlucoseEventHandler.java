@@ -1,6 +1,8 @@
-package ml.glucosedev.glucose;
+package ml.glucosedev.glucose.event;
 
+import ml.glucosedev.glucose.GlucoseConfig;
 import ml.glucosedev.glucose.commands.glucose.GlucoseCommand;
+import ml.glucosedev.glucose.commands.glucose.PluginsCommand;
 import ml.glucosedev.glucose.commands.glucose.UptimeCommand;
 import ml.glucosedev.glucose.plugin.GlucosePluginLoader;
 import ml.glucosedev.glucoselib.command.CommandManager;
@@ -20,6 +22,7 @@ public class GlucoseEventHandler {
 //        getEventHandler().registerEvent();
         CommandManager.registerCommand(new GlucoseCommand(), "glucose");
         CommandManager.registerCommand(new UptimeCommand(), "uptime");
+        CommandManager.registerCommand(new PluginsCommand(), "plugins");
     }
     public void serverInitializeEvent() throws IOException {
         j.info("Initializing server...");

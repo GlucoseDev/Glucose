@@ -1,10 +1,7 @@
 package ml.glucosedev.glucose;
 
 //import jdk.internal.joptsimple.*;
-import joptsimple.*;
-import net.minecraft.SharedConstants;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
+import ml.glucosedev.glucose.event.GlucoseEventHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -12,10 +9,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
-import java.nio.file.FileSystemException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class Main {
     static Logger j = LogManager.getLogger("Glucose");
