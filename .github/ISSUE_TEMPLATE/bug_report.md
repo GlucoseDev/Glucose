@@ -14,3 +14,5 @@ Operating system: <!-- (i.e: Linux nucleus 5.12.12-arch1-1 #1 SMP PREEMPT Fri, 1
 
 **Reproducing the issue**
 <!-- Instructions on how to reproduce the issue -->
+**Plugins**
+<!-- Run /plugins ingame to find out what plugins you are using -->
