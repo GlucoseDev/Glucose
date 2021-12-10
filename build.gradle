@@ -51,7 +51,7 @@ dependencies {
 }
 
 group = 'ml.glucosedev'
-version = '1.17.1-014'
+version = '1.17.1-015'
 description = 'Glucose'
 sourceCompatibility = JavaVersion.VERSION_16
 targetCompatibility = JavaVersion.VERSION_16
