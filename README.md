@@ -1,3 +1,5 @@
+> This is dead. See [Gallium](https://github.com/GalliumPowered/Gallium) for a rewrite of this.
+
 ![logo](https://glucosedev.ml/resources/glucose2.svg)
 --
 [![CI Status](https://github.com/GlucoseDev/Glucose/workflows/Java%20CI%20With%20Gradle/badge.svg)](https://github.com/GlucoseDev/Glucose/actions)
